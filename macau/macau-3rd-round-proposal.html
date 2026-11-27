@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마카오 3차 공구, 지금 다시 진행해야 하는 이유 — 리얼커플 (대표 보고용)</title>
+<style>
+  :root{
+    --navy:#0f2747; --navy2:#1c3c63; --ink:#16202e; --sub:#5a6b80;
+    --line:#e4e9f0; --bg:#f6f8fb; --card:#ffffff; --gold:#c8a24a;
+    --blue:#2f6fed; --blue-soft:#eaf1ff; --teal:#0e8f8f;
+    --green:#1f9d57; --green-bg:#e7f6ee; --red:#d4453b; --red-bg:#fdeceb;
+    --yellow:#caa017; --yellow-bg:#fbf4dd; --gray-bg:#eef1f5;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,-apple-system,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px 90px;}
+  .hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#274d7d 100%);color:#fff;border-radius:0 0 26px 26px;padding:44px 40px 38px;box-shadow:0 18px 50px -24px rgba(15,39,71,.5);}
+  .hero .eyebrow{letter-spacing:.18em;font-size:12.5px;color:#9db8de;font-weight:700;text-transform:uppercase;}
+  .hero h1{font-size:29px;line-height:1.3;margin:12px 0 8px;font-weight:800;letter-spacing:-.5px;}
+  .hero h1 .accent{color:var(--gold);}
+  .hero .sub{color:#cfddf0;font-size:15.5px;max-width:780px;font-weight:600;}
+  .hero .meta{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;font-size:12.5px;}
+  .hero .meta span{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);padding:5px 11px;border-radius:999px;color:#dbe7f7;}
+  .tldr{margin-top:-20px;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--gold);border-radius:16px;padding:22px 26px;box-shadow:0 12px 36px -22px rgba(15,39,71,.35);position:relative;z-index:2;}
+  .tldr .k{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:8px;}
+  .tldr ul{margin:0;padding-left:0;list-style:none;}
+  .tldr li{padding:7px 0 7px 26px;position:relative;font-size:15px;border-top:1px solid var(--line);}
+  .tldr li:first-child{border-top:none;}
+  .tldr li:before{content:"▸";position:absolute;left:4px;color:var(--gold);font-weight:800;}
+  .tldr b{color:var(--navy);}
+  section{margin-top:40px;}
+  .sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:2px solid var(--navy);padding-bottom:10px;}
+  .sec-h .no{font-size:13px;font-weight:800;color:#fff;background:var(--navy);border-radius:7px;padding:3px 9px;}
+  .sec-h h2{font-size:21px;margin:0;font-weight:800;letter-spacing:-.4px;color:var(--navy);}
+  .sec-h .tag{margin-left:auto;font-size:12px;color:var(--sub);font-weight:600;}
+  .lead{color:var(--sub);font-size:14.5px;margin:0 0 14px;}
+  .grid{display:grid;gap:14px;}
+  .g3{grid-template-columns:repeat(3,1fr);} .g2{grid-template-columns:repeat(2,1fr);} .g4{grid-template-columns:repeat(4,1fr);}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 18px;}
+  .card h3{margin:0 0 7px;font-size:15px;color:var(--navy);font-weight:800;}
+  .card p{margin:0;font-size:13.5px;color:var(--sub);}
+  .statcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center;}
+  .statcard .v{font-size:27px;font-weight:800;color:var(--navy);letter-spacing:-1px;line-height:1.1;}
+  .statcard .v small{font-size:14px;font-weight:700;color:var(--sub);}
+  .statcard .l{font-size:12px;color:var(--sub);margin-top:6px;font-weight:600;}
+  .statcard .src{font-size:10.5px;color:#9aa7b8;margin-top:3px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px;}
+  thead th{background:var(--navy);color:#fff;font-weight:700;text-align:left;padding:10px 13px;font-size:12.5px;}
+  td{padding:10px 13px;border-top:1px solid var(--line);vertical-align:top;}
+  tbody tr:nth-child(even){background:#fbfcfe;}
+  .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
+  .callout{border-radius:13px;padding:16px 18px;font-size:14px;border:1px solid;}
+  .co-blue{background:var(--blue-soft);border-color:#cfe0ff;color:#1b3e7a;}
+  .co-gold{background:#fbf6e9;border-color:#ecd9a6;color:#6e5410;}
+  .co-green{background:var(--green-bg);border-color:#bce6cd;color:#155f37;}
+  .co-red{background:var(--red-bg);border-color:#f4c9c6;color:#8e2a23;}
+  .callout b{font-weight:800;}
+  .b{display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;white-space:nowrap;}
+  .b-g{background:var(--green-bg);color:var(--green);} .b-y{background:var(--yellow-bg);color:#9a7a05;} .b-r{background:var(--red-bg);color:var(--red);}
+  /* timeline */
+  .tl{position:relative;margin:6px 0 0 6px;padding-left:24px;border-left:3px solid #d9e2ee;}
+  .tl .it{position:relative;padding:0 0 16px;}
+  .tl .it:before{content:"";position:absolute;left:-31px;top:3px;width:13px;height:13px;border-radius:50%;background:#fff;border:3px solid var(--blue);}
+  .tl .it.bad:before{border-color:var(--red);} .tl .it.good:before{border-color:var(--green);}
+  .tl .d{font-size:12px;font-weight:800;color:var(--blue);} .tl .it.bad .d{color:var(--red);} .tl .it.good .d{color:var(--green);}
+  .tl .t{font-size:13.5px;color:var(--ink);margin-top:2px;} .tl .t b{color:var(--navy);}
+  .step{display:flex;gap:15px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:11px;}
+  .step .n{flex:none;width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .step h3{margin:0 0 4px;font-size:15px;color:var(--navy);} .step p{margin:0;font-size:13.5px;color:var(--sub);}
+  .ww{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .ww .col{padding:16px 18px;font-size:13.5px;} .ww .col h3{margin:0 0 8px;font-size:14.5px;font-weight:800;}
+  .ww .c1{background:#0f2747;color:#eaf1fc;} .ww .c1 h3{color:#ffd97a;}
+  .ww .c2{background:#143a3a;color:#e6f5f1;} .ww .c2 h3{color:#7fe6cf;}
+  .ww .c3{background:#3a2c06;color:#f6ecd2;} .ww .c3 h3{color:#ffd97a;}
+  .foot{margin-top:36px;padding:18px;background:#eef2f7;border-radius:13px;font-size:12px;color:var(--sub);}
+  .foot b{color:var(--navy);}
+  @media (max-width:760px){.g3,.g2,.g4,.ww{grid-template-columns:1fr;}.hero{padding:32px 22px 28px;}.hero h1{font-size:23px;}}
+  @media print{body{background:#fff;}.hero{border-radius:0;box-shadow:none;}section{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="wrap" style="padding:0;">
+    <div class="eyebrow">YES TRAVEL · 리얼커플 마카오 3차 공구 · 대표 보고용</div>
+    <h1>문제는 채널이 아니라 <span class="accent">'타이밍'</span>이었습니다.<br>그 타이밍이 지나가고 있습니다.</h1>
+    <p class="sub">2차 공구가 0건이 된 건 상품·인플의 문제가 아니라, 그 시기가 '해외여행 사상 최악의 외부 악재 창'과 정확히 겹쳤기 때문입니다. 그 악재가 지금 빠지고 있고 — 최악의 시기에도 11건은 들어왔습니다. 보강해서 다시 진행하면 충분히 가능합니다.</p>
+    <div class="meta">
+      <span>📅 2026-06-25</span>
+      <span>🤝 리얼커플 @real_couple0815 (전속)</span>
+      <span>🇲🇴 안다즈 마카오 & 에어마카오 · 객단가 127만</span>
+      <span>🔁 이번이 3차 · 재촬영 없음(기존 소재 재편집)</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tldr">
+    <div class="k">한 장 결론</div>
+    <ul>
+      <li><b>2차(2026-05-07)는 최악의 외부 창과 겹쳤다</b> — 유류할증료 5월 <b>33단계(역대 최고)</b>, 이란 전쟁발 항공유 폭등, 무더기 결항, 5월 해외패키지 줄취소.</li>
+      <li><b>그런데도 11건은 예약됐다</b>(이후 고객 시기 불안으로 취소). 정상 시기였던 <b>1차는 20건/₩2,534만</b>. → 수요는 죽지 않았다.</li>
+      <li><b>지금은 그 악재가 빠지는 중</b> — 유류할증료 <b>33→27→19단계(4월比 약 −40%)</b>, 유가 −20%, 6/17 종전 MoU. <span class="b b-y">단, 운항 전면 정상화는 8월 목표 → 출발시점만 재확인</span></li>
+      <li><b>재촬영 없이</b> 기존 소재 + <b>소구포인트·구성·홍보·세팅·취소방지</b>를 보강하면, 5월보다 훨씬 유리한 조건에서 구매도를 끌어올릴 수 있다.</li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-h"><span class="no">01</span><h2>그때가 얼마나 최악이었나 — 외부 악재 (뉴스 실측)</h2><span class="tag">사실 검증</span></div>
+    <p class="lead">2차 판매 시작 <b>2026-05-07</b>은 2016년 거리비례제 도입 이후 <b>해외여행에 가장 불리했던 한 달</b>과 정확히 겹쳤습니다. 추측이 아니라 보도된 사실입니다.</p>
+
+    <div class="grid g4" style="margin-bottom:16px;">
+      <div class="statcard"><div class="v">33<small>단계</small></div><div class="l">5월 국제선 유류할증료</div><div class="src">🟢 2016 거리비례제 후 역대 최고</div></div>
+      <div class="statcard"><div class="v">~230<small>$</small></div><div class="l">항공유 배럴(폭등기)</div><div class="src">🟢 이란 전쟁발</div></div>
+      <div class="statcard"><div class="v">−35.3<small>%</small></div><div class="l">모두투어 5월 해외 YoY</div><div class="src">🟢 패키지 −18.2%</div></div>
+      <div class="statcard"><div class="v">66.3<small>%</small></div><div class="l">"유류할증료가 여행계획에 영향"</div><div class="src">🟡 PMI 설문 6월·n=1000</div></div>
+    </div>
+
+    <div class="tl">
+      <div class="it bad"><div class="d">2026-02 말</div><div class="t">미국·이스라엘의 이란 공격 → <b>'2026 이란 전쟁'</b> 발발. 중동행 결항·영공 폐쇄, 항공유 폭등 시작.</div></div>
+      <div class="it bad"><div class="d">2026-03~04</div><div class="t">유류할증료 <b>3월 6 → 4월 18단계</b>. 비엣젯 인천-나트랑·다낭·푸꾸옥, 부산-나트랑 결항(인천-푸꾸옥 4/8~5/1 전면 중단). "출발 직전 취소" 소비자피해 보도(아시아경제 3/24).</div></div>
+      <div class="it bad"><div class="d">2026-05 (2차 판매기)</div><div class="t"><b>유류할증료 33단계 = 역대 최고</b>, 5월 내내 유지. 대한항공 편도 최고 56.4만(뉴욕 왕복 113만). 캐세이·홍콩익스프레스·에어부산 감편/중단. SNS·여행카페 <b>"5월 패키지 줄취소"</b>.</div></div>
+      <div class="it" style="--c:1"><div class="d" style="color:#b8902a">⟵ 리얼커플 2차 판매 = 2026-05-07</div><div class="t" style="color:#8a6d12"><b>정확히 이 창 한가운데</b>에서 출발했습니다.</div></div>
+    </div>
+
+    <div class="callout co-blue" style="margin-top:14px;">
+      <b>요지.</b> 2차가 부진했던 1차 원인은 <b>상품·인플·홍보가 아니라 '시기'</b>였습니다. 같은 5월에 <b>리얼커플의 국내 공구는 폭발</b>했어요(썬웨이워터파크 283건/₩3,568만, 고요하우스 47건/₩1,449만) — 채널은 멀쩡했고, 무너진 건 '해외'라는 카테고리 전체였습니다.
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-h"><span class="no">02</span><h2>그런데도 11건 — 수요는 죽지 않았다</h2></div>
+    <p class="lead">최악의 환경에서도 예약이 들어왔다는 것이 핵심입니다. 그리고 정상 시기엔 더 잘 팔렸습니다.</p>
+    <table>
+      <thead><tr><th>마카오 회차</th><th>판매시작</th><th>외부 환경</th><th class="num">결과</th></tr></thead>
+      <tbody>
+        <tr><td><b>1차</b></td><td>2025-09-18</td><td>비교적 정상</td><td class="num">✅ 20건 / ₩25,345,000 <span style="font-weight:600;color:var(--sub)">(객단가 127만)</span></td></tr>
+        <tr><td><b>2차</b></td><td>2026-05-07</td><td>🔴 사상 최악(33단계·줄취소)</td><td class="num">11건 예약 → 시기 불안 취소 → <b>0 확정</b></td></tr>
+      </tbody>
+    </table>
+    <div class="callout co-green" style="margin-top:14px;">
+      <b>객관적으로 읽으면.</b> ① <b>1차 20건/₩2,534만</b> = 해외도 팔린다는 분명한 증거(객단가 국내의 4~6배, 켄싱턴평창 112건보다 큰 매출). ② <b>2차 11건</b> = 최악에도 예약 의향은 살아있었고, 무너진 지점은 '시기 불안 → 취소'. <b>즉 진짜 과제는 '수요 창출'이 아니라 '취소 방지(불안 해소)'</b>입니다. <span style="font-size:11.5px;color:#155f37;">(※ 11건은 내부 수치라 외부 직접검증은 불가하나, 5월 해외패키지 줄취소라는 거시 흐름과 방향이 일치합니다.)</span>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-h"><span class="no">03</span><h2>지금은 다르다 — 악재가 빠지고 있다</h2><span class="tag">단, 정직하게</span></div>
+    <p class="lead">5월에 도배되던 '유류세 최고·결항' 뉴스는 6월 들어 확연히 줄었습니다. 다만 '완전 해소'라고 말하진 않겠습니다 — 그게 대표님께 더 신뢰가 갑니다.</p>
+    <div class="grid g2">
+      <div class="callout co-green">
+        <b>✅ 빠진 것 (가격·심리)</b><br>
+        • 유류할증료 <b>5월 33 → 6월 27 → 7월 19단계</b>(4월比 약 −40%, 7월은 전월比 −20%+). 미주 왕복 약 22만원↓.<br>
+        • 국제유가 브렌트 6/23 <b>~$76.5(한 달 −20.8%)</b> — 분쟁 전 수준 근접.<br>
+        • <b>6/17 미·이란 종전 MoU</b>·호르무즈 재개방 → 5월式 악재 뉴스 노출 급감.
+      </div>
+      <div class="callout co-gold">
+        <b>△ 아직인 것 (운항) — 출발시점 체크</b><br>
+        • 결항·감편 <b>전면 정상화는 진행형</b>: AirAsia "8월까지 정상화 목표".<br>
+        • 공급망 완전 복구 1~6개월 전망, 제주·티웨이 무급휴직 등 후유증 잔존.<br>
+        • 종전도 60일 시한 잠정 단계.<br>
+        <b>→ 판매·출발 시점은 7~8월 운항 안정 확인 후 설계.</b>
+      </div>
+    </div>
+    <div class="callout co-blue" style="margin-top:14px;">
+      <b>정확한 표현.</b> "이슈가 완전히 없어졌다"가 아니라 — <b>"악재의 핵심(가격·심리)은 빠졌고, 운항 정상화는 6~8월에 마무리되는 중"</b>. 즉 <b>5월보다 확연히 유리해진 창</b>이며, 출발시점 운항만 확인하면 됩니다.
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-h"><span class="no">04</span><h2>그래서 이렇게 보강해서 진행한다 — 구매도 끌어올리기</h2><span class="tag">실행안</span></div>
+    <p class="lead">타이밍이 정상화되면 출발선이 올라갑니다. 그 위에 아래를 얹어 <b>'예약 후 취소'를 '구매 확정'으로</b> 바꿉니다. (재촬영 없이, 기존 소재 + 회사 키트로.)</p>
+
+    <div class="step"><div class="n">1</div><div><h3>소구 포인트 확실히 (공포 역이용)</h3><p><b>"유류할증료 40%↓·종전·유가 안정 = 지금이 갈 때"</b>를 전면에. + 객단가 127만이 비싸 보이지 않게 <b>'국내값에 해외 5성급(항공+안다즈 포함)'</b>으로 가치 분해. + <b>"마카오는 단거리라 유류할증료 실질 타격이 미주·유럽의 일부 수준"</b>(거리비례제) — 남들 비싸서 해외 못 갈 때 <b>마카오는 오히려 가성비</b>라는 역발상 메시지.</p></div></div>
+    <div class="step"><div class="n">2</div><div><h3>구성 보강 = 취소의 진짜 원인(시기 불안) 제거</h3><p>무료 일정변경 · <b>미사용/결항 시 자동환불</b> · 여행자보험 · 대체편 보장 등 <b>안심 장치를 상품에 내장</b>. 2차에서 11건을 날린 '불안'을 구성으로 직접 해소.</p></div></div>
+    <div class="step"><div class="n">3</div><div><h3>홍보 점검 — 외부 탓인지 홍보 부족인지 분리</h3><p>1차(20건) 대비 2차의 도달·노출·댓글 <b>인사이트 수치 확인</b>(외부 영향 vs 홍보 부족 구분). 댓글 이벤트·임박 타임특가로 <b>댓글 엔진 재점화</b>.</p></div></div>
+    <div class="step"><div class="n">4</div><div><h3>세팅 체크 — 전환 누수 차단</h3><p>결제 플로우 · 재고/객실 · 가격 표시 · DM 자동응답 · 링크 점검. "들어온 의향이 새지 않게" 판매 세팅을 사전 검수.</p></div></div>
+    <div class="step"><div class="n">5</div><div><h3>타이밍 설계</h3><p>7~8월 <b>운항 안정 확인 후</b> 판매·출발일 설정. 유류할증료 추가 인하·성수기 수요와 정렬.</p></div></div>
+    <div class="step"><div class="n">6</div><div><h3>취소 방지 후속</h3><p>예약 직후 <b>'안심 콘텐츠'</b>(현지 안전·운항 정상 안내) 후속 발송으로 2차式 '예약 후 이탈'을 사전 차단.</p></div></div>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-h"><span class="no">05</span><h2>결론 — 지금 다시 가야 하는 이유</h2></div>
+    <div class="ww" style="margin-bottom:14px;">
+      <div class="col c1"><h3>🏢 회사</h3>전속 인플의 해외 미진행은 기회손실 — 검증된 채널 × 검증된 상품(1차 20건)을 <b>유리해진 창</b>에서 재가동. 객단가 4~6배 신규 매출축.</div>
+      <div class="col c2"><h3>🧑‍💼 대표님</h3><b>재촬영X·기존 소재</b>라 추가 비용 최소. 외부 변수는 정직하게 '출발시점 재확인'으로 관리 → <b>리스크 낮은 의사결정</b>.</div>
+      <div class="col c3"><h3>⭐ 리얼커플</h3>국내만 반복하는 전속에서 <b>해외까지 파는 인플</b>로. 본인 강점(감성·댓글 엔진)만 쓰고 나머지는 회사가.</div>
+    </div>
+    <div class="callout co-gold">
+      <b>한 줄로.</b> 2차의 0은 <b>'상품이 안 된다'가 아니라 '하필 최악의 때였다'</b>는 뜻입니다. 그 최악에도 11건이 들어왔고, 정상기 1차는 20건/₩2,534만을 팔았습니다. <b>악재가 빠지는 지금</b>, 재촬영 없이 <b>소구포인트·구성·홍보·세팅·취소방지</b>만 보강해 다시 진행하면 — 충분히 끌어올릴 수 있습니다. <b>다음 한 수: 보강된 마카오 3차, 운항 안정 창에서 재가동.</b>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>데이터·출처.</b> 매출/예약: 리얼커플 전체 공구표(예스트래블 내부, 33회차) · 마카오 1차 20건/₩25,345,000, 2차 11건 예약 후 취소(내부). 외부 악재·완화: 경향신문(5월 유류할증료 역대최고)·YTN(33→27단계)·파이낸셜뉴스(7월 19단계·종전 MoU·공급망 1~6개월)·AirAsia(8월 정상화 목표)·아시아경제(출발직전 취소 소비자피해)·모두투어 실적·PMI 설문 등 공개 보도(2026-03~06). <b>팩트 등급</b> 🟢확정 / 🟡추정·정황 / 🔴미검증. 본 자료 2026-06-25 기준 · 외부 운항·유가는 발권시점 재확인 필요.<br><br><b>📎 참고 자료(별첨).</b> 리얼커플 채널 영향력 실측(댓글=구매 대기열)·전체 공구 33회차 분석·동반성장 구조 등 상세 근거는 <a href="macau-influencer-growth-strategy.html" style="color:var(--blue);font-weight:800;">상세 분석 보고서</a>에 정리돼 있습니다.
+  </div>
+</div>
+</body>
+</html>

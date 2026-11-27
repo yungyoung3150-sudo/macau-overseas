@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인천발 일본 직항 · 공동구매 목적지 전략 (미팅 우선순위 기반) | YES TRAVEL</title>
+<style>
+  :root{
+    --bg:#eef1f7; --card:#fff; --ink:#16203a; --sub:#5a6478; --line:#e4e9f2;
+    --navy:#0b2e6b; --accent:#0b3d91; --gold:#b8860b; --goldbg:#fff5d6;
+    --green:#1f8b4c;
+    --peak:#c0392b; --hi:#e67e22; --mid:#cfd8e6; --lo:#eef1f7;
+    --shadow:0 1px 3px rgba(15,25,55,.06),0 8px 30px rgba(15,25,55,.07);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Segoe UI",Roboto,sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 20px 90px}
+  .cover{background:linear-gradient(135deg,#0b2e6b 0%,#0b3d91 55%,#1559b0 100%);color:#fff;border-radius:0 0 22px 22px;
+    padding:40px 36px 32px;margin:0 -20px 26px;box-shadow:var(--shadow)}
+  .cover .brand{font-size:13px;font-weight:800;letter-spacing:.16em;opacity:.85}
+  .cover h1{font-size:31px;line-height:1.25;margin:13px 0 8px;letter-spacing:-.02em}
+  .cover .lead{font-size:14.5px;opacity:.92;max-width:800px}
+  .cover .metaline{margin-top:15px;font-size:12px;opacity:.82;display:flex;flex-wrap:wrap;gap:13px}
+  .cover .metaline b{color:#ffe7a8}
+  .toolbar{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);color:#fff;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;gap:7px;align-items:center}
+  .btn:hover{background:rgba(255,255,255,.24)} .btn.solid{background:#ffd86b;color:#3a2c00;border-color:#ffd86b}
+
+  h2.sec{font-size:20px;margin:36px 0 6px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+  h2.sec .no{background:var(--navy);color:#fff;border-radius:8px;font-size:13px;font-weight:800;padding:3px 9px}
+  .sec-desc{color:var(--sub);font-size:13.5px;margin:0 0 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 20px}
+  .callout{border-left:4px solid var(--accent);background:#f4f8ff;border-radius:0 12px 12px 0;padding:14px 18px;margin:14px 0;font-size:13.8px}
+
+  /* tier badges */
+  .tb{display:inline-block;font-weight:800;font-size:11px;color:#fff;border-radius:6px;padding:1px 7px;min-width:30px;text-align:center}
+  .tb.p{background:var(--navy)} .tb.s{background:var(--gold)}
+  .iata{font-size:10.5px;font-weight:800;color:#fff;background:#52607a;border-radius:5px;padding:1px 6px;margin-left:4px}
+
+  /* heatmap */
+  .heatwrap{overflow-x:auto}
+  .heat{width:100%;border-collapse:separate;border-spacing:3px;min-width:640px}
+  .heat th{font-size:11px;color:var(--sub);font-weight:700;padding:3px 2px;text-align:center}
+  .heat td.lab{text-align:left;font-size:12.5px;font-weight:700;white-space:nowrap;padding-right:10px}
+  .heat tr.grp td{padding-top:8px;font-size:11.5px;color:var(--gold);font-weight:800}
+  .hc{width:30px;height:23px;border-radius:5px;text-align:center;font-size:9px;color:#fff;font-weight:700}
+  .L3{background:var(--peak)} .L2{background:var(--hi)} .L1{background:var(--mid);color:#52607a} .L0{background:var(--lo);color:#aab4c6}
+  .hleg{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--sub);align-items:center}
+  .hleg .sw{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:5px;vertical-align:middle}
+
+  /* okinawa monthly bars */
+  .obars{display:flex;align-items:flex-end;gap:6px;height:150px;padding-top:8px}
+  .ob{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .ob .bar{width:74%;border-radius:5px 5px 0 0;background:#9fb4d8}
+  .ob.w .bar{background:#c0392b} .ob.s .bar{background:#e67e22}
+  .ob .v{font-size:9px;color:var(--sub);font-weight:700} .ob .p{font-size:9px;color:#c0392b;font-weight:800;margin-bottom:2px}
+  .ob .m{font-size:10px;color:var(--sub);margin-top:4px}
+
+  /* national mini curve */
+  .ncurve{display:flex;align-items:flex-end;gap:5px;height:90px}
+  .nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .nb .bar{width:70%;border-radius:3px 3px 0 0;background:#c3d0e8}
+  .nb.pk .bar{background:#0b3d91} .nb .m{font-size:9px;color:var(--sub);margin-top:3px}
+
+  /* kpi table */
+  table.kt{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  .kt thead th{font-size:11px;color:var(--sub);text-align:left;padding:9px 8px;background:#f7f9fd;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}
+  .kt tbody td{padding:8px 8px;border-bottom:1px solid var(--line);font-size:12.3px;vertical-align:middle}
+  .kt tbody tr.grp td{background:#fffaf0;color:var(--gold);font-weight:800;font-size:11.5px;padding:6px 8px}
+  .kt tbody tr:hover:not(.grp){background:#fafcff}
+  .dn{font-weight:800} .big{font-weight:900;font-size:13.5px;color:var(--navy)}
+  .lf.ok{color:#1f8b4c;font-weight:800} .lf.na{color:#aab4c6;font-weight:700}
+  .yo{font-size:10px;color:#1f8b4c;font-weight:700}
+
+  /* detail cards */
+  .dcards{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+  .dc{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:15px 17px}
+  .dc.star{border-color:#ecd9a0;background:#fffdf7}
+  .dc .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+  .dc h4{margin:0;font-size:15.5px} .dc .sub2{font-size:11px;color:var(--sub);margin-top:2px}
+  .dc .cmt{font-size:12.5px;color:var(--accent);font-weight:700;margin-top:7px;background:#f4f8ff;border-radius:8px;padding:6px 9px}
+  .dc .alt{font-size:11px;color:var(--gold);font-weight:700;margin-top:5px}
+  .dcrow{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}
+  .stat{background:#f7f9fd;border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11px}
+  .stat b{color:var(--navy);font-size:12.5px}
+  .mstrip{display:flex;gap:2px;margin-top:9px}
+  .mcell{flex:1;height:15px;border-radius:3px;font-size:7.5px;color:#fff;text-align:center;line-height:15px}
+  .dc .note{font-size:12px;color:var(--sub);margin-top:8px}
+  .als{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+  .al{font-size:10px;font-weight:800;color:#fff;border-radius:5px;padding:1px 6px;white-space:nowrap}
+  .al small{font-weight:600;font-size:8.5px;opacity:.9;margin-left:3px}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+  .b2b{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:17px 19px}
+  .b2b h3{margin:0 0 4px;font-size:15.5px} .b2b .tagline{font-size:12px;color:var(--sub);margin-bottom:9px}
+  .b2b ol{margin:0;padding-left:18px} .b2b li{font-size:12.5px;margin:5px 0} .b2b li b{color:var(--navy)}
+  .note2{background:#f7f9fd;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:12.3px;color:var(--sub);line-height:1.7}
+  .note2 b{color:var(--ink)}
+  footer{margin-top:30px;font-size:12px;color:var(--sub);line-height:1.7} footer a{color:var(--accent)}
+  @media (max-width:820px){
+    .dcards,.twocol{grid-template-columns:1fr} .cover h1{font-size:23px}
+  }
+  @media print{ body{background:#fff} .toolbar{display:none}
+    .cover{margin:0;border-radius:0} .card,.dc,table,.b2b{box-shadow:none;break-inside:avoid} h2.sec{break-after:avoid}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="cover">
+    <div class="brand">YES TRAVEL · 신규 일본 상품 제안 보고서 (미팅 우선순위 기반)</div>
+    <h1>인천발 일본 직항 공동구매 — 지역 우선순위 & 지역별 월별 시즌</h1>
+    <div class="lead">미팅에서 정한 <b>우선순위(0~4군)</b> 순서로, 각 지역의 <b>2025 한국인 수 · 지역별 월별 수요 · 항공 좌석·탑승률</b>을 정리했습니다. 별표(★) 표시 지역은 비고로 뒤에 배치. 랜드사·항공사 제안에 바로 쓰는 정량 자료.</div>
+    <div class="metaline">
+      <span>작성기준 <b>2026-06</b></span>
+      <span>한국인 수: 2025 직접·속보+추정</span>
+      <span>월별: 지역 시즌 + JNTO/오키나와 입역 실측</span>
+      <span>항공: 항공사 공식 시각표·탑승률</span>
+    </div>
+    <div class="toolbar">
+      <a class="btn solid" href="javascript:window.print()">🖨️ PDF로 저장 / 인쇄</a>
+      <a class="btn" href="javascript:void(navigator.clipboard&&navigator.clipboard.writeText(location.href))">🔗 링크 복사</a>
+      <a class="btn" href="routes.html">✈️ 전체 직항·항공사 데이터</a>
+    </div>
+  </header>
+
+  <h2 class="sec"><span class="no">핵심</span> 미팅 우선순위 요약</h2>
+  <div class="callout">
+    <b>0 후쿠오카</b>(사계절 접근성·기준) → <b>1 다카마쓰·마쓰야마</b>(한국인 인기) → <b>1.1 나고야 · 1.2 히로시마 · 1.3 나가사키 · 1.8 기타큐슈</b> → <b>2 구마모토 · 2.3 아오모리 · 2.5 오키나와</b> → <b>3 센다이 · 4 요나고 · 논의 사가</b>.
+    별표 비고군(대형·검증 시장): <b>★ 시즈오카 · ★★ 삿포로 · ★★★ 오사카 · ★★★ 도쿄</b>. <br>
+    <b>핵심 관점:</b> 0~4군은 "희소성+접근성" 신상품 후보, 별표군은 "이미 큰 시장(파이)". 지역마다 <b>성수 시즌이 달라</b>(겨울형·여름형·봄가을형) 공구 오픈 타이밍을 아래 월별 히트맵으로 맞춰야 합니다.
+  </div>
+
+  <h2 class="sec"><span class="no">1</span> 지역별 월별 한국 수요 히트맵 (★핵심)</h2>
+  <p class="sec-desc">전국 평균이 아니라 <b>지역별</b> 월별 수요 강도. <span style="color:#c0392b;font-weight:700">최성수</span>·<span style="color:#e67e22;font-weight:700">성수</span> 칸에 공구를 열어야 매진 확률↑. (근거: 항공 증편시기·축제·한국 휴가·현지 월별통계)</p>
+  <div class="card heatwrap"><table class="heat" id="heat"></table>
+    <div class="hleg">
+      <span><span class="sw" style="background:var(--peak)"></span>최성수</span>
+      <span><span class="sw" style="background:var(--hi)"></span>성수</span>
+      <span><span class="sw" style="background:var(--mid)"></span>보통</span>
+      <span><span class="sw" style="background:var(--lo)"></span>비수</span>
+      <span style="margin-left:auto">겨울형: 가고시마류·<b>오키나와</b>·삿포로 / 봄·여름형: 후쿠오카·히로시마·시즈오카 / 여름형: 아오모리·센다이·요나고</span>
+    </div>
+  </div>
+
+  <h2 class="sec"><span class="no">2</span> 오키나와 — 월별 한국 입역객 실측 ("겨울속 여름" 입증)</h2>
+  <p class="sec-desc">오키나와는 <b>월별 한국 입역객을 실제 공표</b>하는 유일 지역. 한국인 점유율이 <b>겨울 27% vs 여름 14%</b>로 — 추운 한국을 피해 겨울에 따뜻한 오키나와로 몰리는 <b>"겨울속 여름"</b> 패턴이 데이터로 확인됩니다(미팅 코멘트 일치).</p>
+  <div class="card"><div class="obars" id="okibars"></div>
+    <div class="hleg"><span><span class="sw" style="background:#c0392b"></span>겨울(한국 점유 22%+)</span><span><span class="sw" style="background:#e67e22"></span>성수</span><span style="margin-left:auto">막대=한국 입역객(명), 상단=외국인 중 한국 점유율. 2025년 실측(1~3월은 겨울편중 추정)</span></div>
+  </div>
+
+  <h2 class="sec"><span class="no">3</span> 전국 한국 방일 추이 (참고 — 지역 시즌과 다름)</h2>
+  <p class="sec-desc">전국은 <b>12·1·2월(설·연말)·5·10월</b>이 피크지만, 지역은 위 히트맵처럼 제각각입니다. 전국 규모: <b>2025년 946만 명(국가별 1위, +7.3%)</b> · 평균 4.2박 · 1인당 10.9만엔.</p>
+  <div class="card"><div class="ncurve" id="ncurve"></div></div>
+
+  <h2 class="sec"><span class="no">4</span> B2B 핵심지표 (제안 근거 — 우선순위 순)</h2>
+  <p class="sec-desc">2025 한국인 수 · 전년比 · 주간 좌석공급(성수기 편도) · 탑승률 · 최성수월. 탑승률 80%+는 항공사 증편 설득 근거.</p>
+  <table class="kt"><thead><tr>
+    <th>군</th><th>지역</th><th>2025 한국인<br>(전년比)</th><th>주간좌석<br>(성수,편도)</th><th>탑승률</th><th>최성수월</th><th>미팅 코멘트</th>
+  </tr></thead><tbody id="ktBody"></tbody></table>
+  <div class="note2" style="margin-top:10px">※ 한국인 수 단위=연 숙박객(人泊) 또는 입역객(오키나와). 후쿠오카·삿포로·오사카·도쿄 등은 2025 추정(2025 총숙박×비중), 요나고·나가사키·사가·타카마츠는 2025 직접공표. 기타큐슈는 후쿠오카현 합산이라 별도 분리 불가. 관광청 도도부현×국적 2025 확정판은 2026-06-30 공표 예정.</div>
+
+  <h2 class="sec"><span class="no">5</span> 지역 상세 카드 (미팅 우선순위)</h2>
+  <div class="dcards" id="detail"></div>
+
+  <h2 class="sec"><span class="no">6</span> 데이터 출처 · 공유</h2>
+  <div class="note2">
+    <b>한국인 수 = 2025 기준</b>: 관광청 2025 연간 속보(참고제1표)·현/시 자체 통계 직접공표 우선(요나고·나가사키·사가·타카마츠·가고시마 등), 미공표는 2025 총숙박×2024비중 추정(후쿠오카·삿포로·오사카·도쿄·나고야·히로시마·시즈오카·미야자키, 카드 태그로 구분). 구마모토는 2025 점유율만 직접확인. <b>오키나와는 월별 한국 입역객 실측 공표</b>. <b>월별 히트맵</b>=항공 증편시기+축제+한국 휴가+현지 월별통계 종합. <b>탑승률·좌석</b>=항공사 공식 시각표·언론(기준연도 상이).<br>
+    <b>공유</b> · 외부 의존 없는 자기완결 HTML. 상단 PDF/링크복사. 공개 웹 링크 배포는 최종 확정 후 진행.
+  </div>
+  <footer>© YES TRAVEL 내부 전략·제안 자료 · 2026-06 · 미팅 우선순위 기반 재구성 · 데이터: 관광청·JNTO·오키나와현 입역통계·공항/항공사 1차 출처(멀티에이전트 검증). 2024 확정·2025/26 속보·추정 병행, 실행 전 좌석·시즌 최종확인 권장.</footer>
+</div>
+
+<script>
+const LV={'비수':0,'보통':1,'성수':2,'최성수':3};
+// group: p=우선순위, s=별표(비고)
+const C=[
+ {tier:'0',group:'p',iata:'FUK',name:'후쿠오카',region:'규슈',cmt:'사계절 한국 접근성 Good (기준 시장)',alt:'',kr:3100000,krTag:'’25 추정',yoy:'+7~8%',monthly:['보통','보통','최성수','최성수','성수','비수','성수','성수','성수','최성수','성수','보통'],seats:62890,lf:'N/A',ac:'협동체·8개 국적사',note:'규슈 최대·근거리·사계절. 한국 접근성 압도적. 단 포화도 높아 인플 차별화가 관건.'},
+ {tier:'1',group:'p',iata:'TAK',name:'타카마츠(가가와)',region:'시코쿠',cmt:'다카마쓰/마쓰야마 = 한국인 인기 좋음',alt:'',kr:165600,krTag:'’25 직접',yoy:'+11%',monthly:['성수','최성수','성수','성수','비수','비수','성수','성수','최성수','성수','성수','성수'],seats:2583,lf:'86%(FY24)',ac:'진에어+에어서울 B737',note:'세토우치 예술·우동·나오시마. 더블트랙 좌석·탑승률 86%.'},
+ {tier:'1',group:'p',iata:'MYJ',name:'마츠야마(에히메)',region:'시코쿠',cmt:'다카마쓰/마쓰야마 = 한국인 인기 좋음',alt:'',kr:220400,krTag:'’25 추정',yoy:'≈+28%',monthly:['보통','보통','보통','최성수','보통','비수','성수','최성수','보통','성수','보통','보통'],seats:3969,lf:'85%(24)',ac:'제주항공 B737 더블데일리',note:'도고온천(지브리)·시모나다역. 한국 숙박 4.5배 급증·재방문 50%+.'},
+ {tier:'1.1',group:'p',iata:'NGO',name:'나고야(주부)',region:'주부',cmt:'3대 대도시, 국내 인지도 높음',alt:'',kr:397000,krTag:'’25 추정',yoy:'≈+7%',monthly:['성수','성수','보통','보통','보통','비수','성수','최성수','성수','성수','비수','최성수'],seats:11400,lf:'N/A',ac:'KE·OZ·LJ·7C 4사 데일리',note:'3대 도시·높은 인지도. 4사 데일리로 좌석 풍부. 단 한국 비중은 中·台 다음.'},
+ {tier:'1.2',group:'p',iata:'HIJ',name:'히로시마',region:'주고쿠',cmt:'가격 상대적 낮음',alt:'',kr:163317,krTag:'’25 추정',yoy:'보합~',monthly:['보통','보통','성수','최성수','성수','보통','보통','성수','성수','최성수','최성수','보통'],seats:2646,lf:'N/A',ac:'제주항공 B737 일2회',note:'평화공원·미야지마·단풍. 제주 단독 주14·가격 경쟁력. 한국직항 증편으로 급증.'},
+ {tier:'1.3',group:'p',iata:'NGS',name:'나가사키',region:'규슈',cmt:'인지도 좋음, 가격 적정선',alt:'',kr:163690,krTag:'’25 직접',yoy:'+8.7%',monthly:['성수','최성수','성수','성수','비수','비수','성수','성수','보통','성수','비수','보통'],seats:632,lf:'N/A',ac:'대한항공 B737-8 협동체',note:'군함도·야경·란탄·하우스텐보스. 인지도↑. 단 KE 단독·소형기라 좌석 적음.'},
+ {tier:'1.8',group:'p',iata:'KKJ',name:'기타큐슈',region:'규슈',cmt:'관광지 바이브 · 오키나와 대체 가능 옵션',alt:'↔ 오키나와 대체',kr:-1,krTag:'후쿠오카현 합산',yoy:'',monthly:['최성수','성수','보통','보통','보통','성수','성수','성수','보통','성수','비수','최성수'],seats:1323,lf:'N/A',ac:'진에어 단독 주7',note:'관광 vibe·오키나와 대체 후보. 진에어 단독 데일리. 한국 수는 후쿠오카현에 합산(별도 분리 불가).'},
+ {tier:'2',group:'p',iata:'KMJ',name:'구마모토(아소)',region:'규슈',cmt:'소도시 감성 · 잘 되면 마쓰야마 대체 가능',alt:'↔ 마츠야마 대체',kr:353590,krTag:'’24 확정',yoy:'’25점유 33~35%',monthly:['성수','보통','성수','성수','성수','보통','성수','최성수','성수','최성수','성수','성수'],seats:2597,lf:'N/A',ac:'대한항공+티웨이 주14',note:'아소산·구로카와온천. 소도시 감성. KE 27년만 재취항+티웨이 매일. 마츠야마 대체 후보.'},
+ {tier:'2.3',group:'p',iata:'AOJ',name:'아오모리',region:'도호쿠',cmt:'여름 매우 시원, 여름 가격 높음',alt:'',kr:34410,krTag:'’25.1~10월',yoy:'',monthly:['성수','성수','보통','최성수','성수','비수','성수','최성수','보통','최성수','보통','보통'],seats:910,lf:'83%(25)',ac:'대한항공 A321neo 하계 주5',note:'여름 매우 시원(피서)·네부타·히로사키 벚꽃. 단 여름 가격↑·KE 단독.'},
+ {tier:'2.5',group:'p',iata:'OKA',name:'오키나와(나하)',region:'오키나와',cmt:'인기·인지도·관광 모두 좋음, 단 항공가↑ — 추천: "겨울속 여름"',alt:'',kr:600000,krTag:'’25 입역추정',yoy:'겨울 점유 27%',monthly:['최성수','성수','성수','보통','성수','보통','보통','비수','보통','성수','성수','최성수'],seats:9828,lf:'N/A',ac:'6개사 B737',note:'리조트·관광 확실. 한국 입역 겨울 27% vs 여름 14% → 겨울 한정 "따뜻한 휴양"이 핵심. 항공가↑가 단점.'},
+ {tier:'3',group:'p',iata:'SDJ',name:'센다이(미야기)',region:'도호쿠',cmt:'도쿄 인접, 특색 없음, 여름 도쿄보다 덜 더워 부담 덜함',alt:'',kr:28500,krTag:'’25 추정',yoy:'보합',monthly:['비수','비수','보통','보통','보통','비수','성수','최성수','보통','성수','보통','비수'],seats:940,lf:'N/A',ac:'아시아나 A321neo 주5',note:'도쿄 인접·여름 덜 더움(부담↓). 특색은 약함. OZ 단독 주5. 다나바타(8월) 성수.'},
+ {tier:'4',group:'p',iata:'YGJ',name:'요나고(돗토리)',region:'산인',cmt:'진입장벽 낮은 부담 없는 입문 옵션',alt:'',kr:27790,krTag:'’25 직접',yoy:'+72.0%',monthly:['성수','성수','성수','성수','보통','성수','최성수','최성수','보통','성수','성수','최성수'],seats:1365,lf:'87%(25 1Q)',ac:'에어서울 A321 단독',note:'사구·대게·부담 없는 소도시. 성장률 +72%·탑승률 87%로 매출 견조. 단 에어서울 단독·동계 한정 데일리.'},
+ {tier:'논의',group:'p',iata:'HSG',name:'사가',region:'규슈',cmt:'논의 대상',alt:'',kr:81540,krTag:'’25 직접',yoy:'+8.5%',monthly:['성수','성수','성수','보통','보통','비수','성수','성수','보통','성수','최성수','성수'],seats:756,lf:'95%(26 1~2월)',ac:'티웨이 단독 주4',note:'발룬페스타·우레시노 온천·다케오 도서관. 탑승률 95%로 수요 강하나 주4 고정·좌석 적음.'},
+ // ── 별표 (비고)
+ {tier:'★',group:'s',iata:'FSZ',name:'시즈오카(후지산)',region:'주부',cmt:'(비고) 후지산',alt:'',kr:128700,krTag:'’25 추정',yoy:'≈+15%',monthly:['비수','보통','성수','최성수','성수','비수','성수','성수','성수','최성수','성수','보통'],seats:2646,lf:'~73%',ac:'제주항공 B737 일2회',note:'후지산 정면 뷰·차밭. 제주 데일리2회. 단 中 의존 높아 총량 변동·후지산 시정 의존.'},
+ {tier:'★★',group:'s',iata:'CTS',name:'삿포로(홋카이도)',region:'홋카이도',cmt:'(비고) 2월초 성수·비쌈, 여름 성수',alt:'',kr:3010000,krTag:'’25 추정',yoy:'+24%(총)',monthly:['성수','최성수','보통','비수','보통','보통','최성수','성수','보통','성수','비수','성수'],seats:10521,lf:'N/A',ac:'6개사(LCC+KE 광동체)',note:'눈축제(2월)·스키·여름 라벤더 — 겨울·여름 2피크. 한국 최대급 시장이나 성수기 비쌈.'},
+ {tier:'★★★',group:'s',iata:'KIX',name:'오사카(간사이)',region:'간사이',cmt:'(비고) 관광상품 多·거의 한국·비쌈, 단 파이 큼',alt:'',kr:4114576,krTag:'’25 추정',yoy:'-4.7%(총)',monthly:['성수','보통','최성수','최성수','성수','비수','보통','성수','보통','성수','최성수','성수'],seats:150000,lf:'89.6%(25.3)',ac:'10개사 다수',note:'관광상품 최다·탑승률 90%. 한국 파이 최대지만 포화·비쌈으로 인플 차별화 약함(박리다매 영역).'},
+ {tier:'★★★',group:'s',iata:'HND',name:'도쿄(하네다·나리타)',region:'간토',cmt:'(비고) 비쌈·포화, 단 파이 큼',alt:'',kr:4650000,krTag:'’25 추정',yoy:'≈+5%(총)',monthly:['성수','성수','성수','최성수','보통','비수','성수','성수','보통','최성수','성수','성수'],seats:44270,lf:'~80~85%',ac:'다수 취항·혼합기재',note:'사계절 최대 시장. 한국 파이 최대지만 비쌈·과포화로 신상품 차별화 어려움.'},
+];
+// 지역별 취항 항공사 (인천직항, IATA 코드)
+const AIR={
+ FUK:['KE','OZ','7C','LJ','TW','BX','RS','ZE'], TAK:['RS','LJ'], MYJ:['7C'], NGO:['KE','OZ','LJ','7C'],
+ HIJ:['7C'], NGS:['KE'], KKJ:['LJ'], KMJ:['KE','TW'], AOJ:['KE'], OKA:['KE','OZ','7C','LJ','TW','ZE'],
+ SDJ:['OZ'], YGJ:['RS'], HSG:['TW'], FSZ:['7C'], CTS:['KE','OZ','7C','LJ','TW','ZE'],
+ KIX:['KE','OZ','7C','LJ','TW','BX','RS','ZE','WE','MM'], HND:['KE','OZ','7C','LJ','TW','YP','ZE','RF','MM','ZG','ET'],
+};
+const ALN={KE:['대한항공','#0b3d91'],OZ:['아시아나','#b11e2f'],'7C':['제주항공','#ff7a00'],LJ:['진에어','#159a8c'],
+ TW:['티웨이','#e23744'],BX:['에어부산','#0079a8'],RS:['에어서울','#7b3fa0'],ZE:['이스타','#d62598'],
+ YP:['에어프레미아','#21314d'],RF:['에어로케이','#5a8f29'],WE:['파라타','#c45c00'],MM:['피치(日)','#a01f9c'],
+ ZG:['집에어(日)','#444b59'],ET:['에티오피아','#1e7a3c']};
+const airList=iata=>AIR[iata]||[];
+const airBadges=iata=>airList(iata).map(c=>`<span class="al" style="background:${(ALN[c]||['','#888'])[1]}" title="${(ALN[c]||[''])[0]} (${c})">${c}<small>${(ALN[c]||[''])[0]}</small></span>`).join('');
+const manFmt=n=>{ if(n<0) return '—'; const m=n/10000; return m>=100?Math.round(m)+'만':(m>=1?m.toFixed(1)+'만':n.toLocaleString()); };
+const peakMonths=c=>c.monthly.map((v,i)=>LV[v]===3?i+1:null).filter(Boolean);
+
+// 1. 히트맵 (우선순위 순, 별표군 구분줄)
+const months=Array.from({length:12},(_,i)=>i+1);
+let h=`<thead><tr><th class="lab" style="text-align:left">군 · 지역 \\ 월</th>${months.map(m=>`<th>${m}</th>`).join('')}</tr></thead><tbody>`;
+let starHdrDone=false;
+C.forEach(c=>{
+  if(c.group==='s' && !starHdrDone){ h+=`<tr class="grp"><td colspan="13">★ 별표(비고) — 대형·검증 시장</td></tr>`; starHdrDone=true; }
+  h+=`<tr><td class="lab"><span class="tb ${c.group}">${c.tier}</span> ${c.name}<span class="iata">${c.iata}</span></td>${
+    c.monthly.map(v=>`<td class="hc L${LV[v]}">${LV[v]>=2?(LV[v]===3?'◆':'●'):''}</td>`).join('')}</tr>`;
+});
+h+='</tbody>'; document.getElementById('heat').innerHTML=h;
+
+// 2. 오키나와 월별 한국 입역 (명, 점유율%) — 2025 실측(1~3월 겨울편중 추정)
+const OKI=[ {m:'1월',v:55000,p:26,e:1},{m:'2월',v:52000,p:25,e:1},{m:'3월',v:60000,p:23,e:1},
+ {m:'4월',v:46400,p:17.7},{m:'5월',v:55200,p:22.8,s:1},{m:'6월',v:45000,p:18.8},{m:'7월',v:42100,p:17.3},
+ {m:'8월',v:41600,p:14.3},{m:'9월',v:43500,p:16.5},{m:'10월',v:50500,p:19.4},{m:'11월',v:51500,p:22.2,s:1},{m:'12월',v:57700,p:26.9,w:1} ];
+const okMax=Math.max(...OKI.map(o=>o.v));
+document.getElementById('okibars').innerHTML=OKI.map(o=>
+ `<div class="ob ${o.p>=22?'w':(o.p>=19?'s':'')}"><div class="p">${o.p}%</div>
+   <div class="bar" style="height:${o.v/okMax*110}px"></div>
+   <div class="v">${Math.round(o.v/1000)}천${o.e?'*':''}</div><div class="m">${o.m}</div></div>`).join('');
+
+// 3. 전국 mini curve (2025, 만명)
+const NAT=[96.7,84.7,69.2,72.2,82.6,73.0,67.9,66.1,67.1,86.7,82.5,97.4];
+const pk=new Set([1,2,5,10,12]); const nmax=Math.max(...NAT);
+document.getElementById('ncurve').innerHTML=NAT.map((v,i)=>
+ `<div class="nb ${pk.has(i+1)?'pk':''}"><div class="bar" style="height:${v/nmax*70}px" title="${i+1}월 ${v}만"></div><div class="m">${i+1}</div></div>`).join('');
+
+// 4. KPI 표
+let kb='', starDone=false;
+C.forEach(c=>{
+  if(c.group==='s' && !starDone){ kb+=`<tr class="grp"><td colspan="7">★ 별표(비고) — 대형·검증 시장 (파이는 크나 포화)</td></tr>`; starDone=true; }
+  const lfok=/\d/.test(c.lf)&&!c.lf.includes('N/A');
+  kb+=`<tr>
+    <td><span class="tb ${c.group}">${c.tier}</span></td>
+    <td><span class="dn">${c.name}</span><span class="iata">${c.iata}</span><div style="font-size:10px;color:var(--sub)">${c.region}</div></td>
+    <td><span class="big">${manFmt(c.kr)}</span>${c.kr>0?' 인박':''} <span class="yo">${c.yoy}</span><div style="font-size:9.5px;color:var(--sub)">${c.krTag}</div></td>
+    <td><b>${c.seats.toLocaleString()}</b><div style="font-size:9.5px;color:var(--sub)">편도/주 · ${airList(c.iata).length}사</div></td>
+    <td class="lf ${lfok?'ok':'na'}">${c.lf}</td>
+    <td style="font-weight:700;color:#c0392b">${peakMonths(c).join('·')}월</td>
+    <td style="font-size:11px;color:var(--sub)">${c.cmt}</td>
+  </tr>`;
+});
+document.getElementById('ktBody').innerHTML=kb;
+
+// 5. 상세 카드
+document.getElementById('detail').innerHTML=C.map(c=>{
+  const strip=c.monthly.map((v,i)=>`<div class="mcell L${LV[v]}" title="${i+1}월 ${v}">${i+1}</div>`).join('');
+  return `<div class="dc ${c.group==='s'?'star':''}">
+    <div class="top"><div><h4><span class="tb ${c.group}">${c.tier}</span> ${c.name} <span class="iata">${c.iata}</span></h4>
+      <div class="sub2">${c.region}</div></div>
+      <div style="text-align:right"><div class="big">${manFmt(c.kr)}${c.kr>0?' 인박':''}</div><div style="font-size:10px;color:var(--sub)">${c.krTag} ${c.yoy}</div></div></div>
+    <div class="cmt">💬 ${c.cmt}</div>
+    ${c.alt?`<div class="alt">🔁 ${c.alt}</div>`:''}
+    <div class="dcrow">
+      <span class="stat">탑승률 <b>${c.lf}</b></span>
+      <span class="stat">좌석 <b>${c.seats.toLocaleString()}</b>/주</span>
+      <span class="stat">최성수 <b>${peakMonths(c).join('·')}월</b></span>
+    </div>
+    <div class="mstrip">${strip}</div>
+    <div class="lab">✈️ 취항 항공사 (${airList(c.iata).length}사)</div>
+    <div class="als">${airBadges(c.iata)}</div>
+    <div class="note">${c.note}</div>
+  </div>`;
+}).join('');
+</script>
+</body>
+</html>

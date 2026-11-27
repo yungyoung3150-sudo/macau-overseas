@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마카오 인플루언서 공구 전략 보고서 — 리얼커플 레퍼런스 기반 (대표 보고용)</title>
+<style>
+  :root{
+    --navy:#0f2747; --navy2:#1c3c63; --ink:#16202e; --sub:#5a6b80;
+    --line:#e4e9f0; --bg:#f6f8fb; --card:#ffffff; --gold:#c8a24a;
+    --blue:#2f6fed; --blue-soft:#eaf1ff; --teal:#0e8f8f;
+    --green:#1f9d57; --green-bg:#e7f6ee; --red:#d4453b; --red-bg:#fdeceb;
+    --yellow:#caa017; --yellow-bg:#fbf4dd; --gray-bg:#eef1f5;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,-apple-system,sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 22px 90px;}
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#274d7d 100%);
+    color:#fff; border-radius:0 0 26px 26px; padding:46px 40px 40px;
+    box-shadow:0 18px 50px -24px rgba(15,39,71,.5);
+  }
+  .hero .eyebrow{letter-spacing:.18em; font-size:12.5px; color:#9db8de; font-weight:700; text-transform:uppercase;}
+  .hero h1{font-size:30px; line-height:1.3; margin:12px 0 6px; font-weight:800; letter-spacing:-.5px;}
+  .hero h1 .accent{color:var(--gold);}
+  .hero .sub{color:#c7d6ec; font-size:15px; max-width:760px;}
+  .hero .meta{margin-top:18px; display:flex; flex-wrap:wrap; gap:8px; font-size:12.5px;}
+  .hero .meta span{background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.18); padding:5px 11px; border-radius:999px; color:#dbe7f7;}
+  /* THESIS */
+  .thesis{
+    margin-top:-22px; background:var(--card); border:1px solid var(--line);
+    border-left:6px solid var(--gold); border-radius:16px; padding:24px 26px;
+    box-shadow:0 12px 36px -22px rgba(15,39,71,.35); position:relative; z-index:2;
+  }
+  .thesis .k{font-size:12px; font-weight:800; letter-spacing:.12em; color:var(--gold); text-transform:uppercase;}
+  .thesis p{margin:8px 0 0; font-size:17px; font-weight:600; color:var(--ink);}
+  .thesis b{color:var(--navy);}
+  /* SECTION */
+  section{margin-top:42px;}
+  .sec-h{display:flex; align-items:baseline; gap:12px; margin-bottom:16px; border-bottom:2px solid var(--navy); padding-bottom:10px;}
+  .sec-h .no{font-size:13px; font-weight:800; color:#fff; background:var(--navy); border-radius:7px; padding:3px 9px; letter-spacing:.04em;}
+  .sec-h h2{font-size:21px; margin:0; font-weight:800; letter-spacing:-.4px; color:var(--navy);}
+  .sec-h .tag{margin-left:auto; font-size:12px; color:var(--sub); font-weight:600;}
+  .lead{color:var(--sub); font-size:14.5px; margin:0 0 14px;}
+  /* CARDS / GRID */
+  .grid{display:grid; gap:16px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 18px;}
+  .card h3{margin:0 0 8px; font-size:15.5px; color:var(--navy); font-weight:800;}
+  .card p{margin:0; font-size:13.5px; color:var(--sub);}
+  /* STAT */
+  .statcard{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px; text-align:center;}
+  .statcard .v{font-size:30px; font-weight:800; color:var(--navy); letter-spacing:-1px; line-height:1.1;}
+  .statcard .v small{font-size:15px; font-weight:700; color:var(--sub);}
+  .statcard .l{font-size:12.5px; color:var(--sub); margin-top:6px; font-weight:600;}
+  .statcard .src{font-size:10.5px; color:#9aa7b8; margin-top:3px;}
+  /* TABLE */
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:13.5px;}
+  thead th{background:var(--navy); color:#fff; font-weight:700; text-align:left; padding:11px 13px; font-size:12.5px;}
+  td{padding:10px 13px; border-top:1px solid var(--line); vertical-align:top;}
+  tbody tr:nth-child(even){background:#fbfcfe;}
+  .num{text-align:right; font-variant-numeric:tabular-nums; font-weight:700;}
+  .hot{color:var(--red); font-weight:800;}
+  .row-total{background:var(--blue-soft)!important; font-weight:800;}
+  .row-total td{border-top:2px solid var(--blue);}
+  /* BADGE */
+  .b{display:inline-block; font-size:11px; font-weight:800; padding:2px 7px; border-radius:6px; white-space:nowrap;}
+  .b-g{background:var(--green-bg); color:var(--green);}
+  .b-y{background:var(--yellow-bg); color:#9a7a05;}
+  .b-r{background:var(--red-bg); color:var(--red);}
+  .legend{display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--sub); margin:10px 0 0;}
+  /* CALLOUT */
+  .callout{border-radius:13px; padding:16px 18px; font-size:14px; border:1px solid;}
+  .co-blue{background:var(--blue-soft); border-color:#cfe0ff; color:#1b3e7a;}
+  .co-gold{background:#fbf6e9; border-color:#ecd9a6; color:#6e5410;}
+  .co-green{background:var(--green-bg); border-color:#bce6cd; color:#155f37;}
+  .co-red{background:var(--red-bg); border-color:#f4c9c6; color:#8e2a23;}
+  .callout b{font-weight:800;}
+  /* WIN-WIN */
+  .ww{display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+  .ww .col{padding:20px 22px;}
+  .ww .col.company{background:#0f2747; color:#eaf1fc;}
+  .ww .col.influ{background:#143a3a; color:#e6f5f1;}
+  .ww .col h3{margin:0 0 12px; font-size:16px; font-weight:800;}
+  .ww .col.company h3{color:#ffd97a;}
+  .ww .col.influ h3{color:#7fe6cf;}
+  .ww ul{margin:0; padding-left:0; list-style:none;}
+  .ww li{padding:7px 0 7px 24px; position:relative; font-size:13.5px; border-top:1px solid rgba(255,255,255,.10);}
+  .ww li:first-child{border-top:none;}
+  .ww li:before{content:"▸"; position:absolute; left:4px; opacity:.7;}
+  .ww .shared{grid-column:1/3; background:var(--gold); color:#3a2c06; padding:13px 22px; font-weight:800; font-size:13.5px; text-align:center;}
+  /* STEPS */
+  .step{display:flex; gap:16px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px 20px; margin-bottom:13px;}
+  .step .n{flex:none; width:38px; height:38px; border-radius:10px; background:var(--navy); color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:17px;}
+  .step .body{flex:1;}
+  .step h3{margin:0 0 4px; font-size:15.5px; color:var(--navy);}
+  .step p{margin:0 0 7px; font-size:13.5px; color:var(--sub);}
+  .step .ev{font-size:12px; color:var(--teal); font-weight:700; background:#e6f5f5; display:inline-block; padding:3px 9px; border-radius:7px;}
+  /* SIM */
+  .sim{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px; }
+  .sim .presets{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+  .sim .presets button{cursor:pointer; border:1px solid var(--line); background:#fff; padding:8px 16px; border-radius:9px; font-weight:700; font-size:13px; color:var(--navy); transition:.15s;}
+  .sim .presets button:hover{border-color:var(--blue);}
+  .sim .presets button.on{background:var(--navy); color:#fff; border-color:var(--navy);}
+  .sim .controls{display:grid; grid-template-columns:repeat(2,1fr); gap:14px 28px; margin-bottom:18px;}
+  .sim .ctl label{display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--navy); margin-bottom:4px;}
+  .sim .ctl label .val{color:var(--blue);}
+  .sim input[type=range]{width:100%; accent-color:var(--blue);}
+  .sim .outs{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; border-top:1px dashed var(--line); padding-top:16px;}
+  .sim .out{text-align:center; background:var(--bg); border-radius:11px; padding:14px 8px;}
+  .sim .out .ov{font-size:24px; font-weight:800; color:var(--navy); letter-spacing:-.5px;}
+  .sim .out.influ .ov{color:var(--teal);}
+  .sim .out .ol{font-size:12px; color:var(--sub); font-weight:600; margin-top:3px;}
+  /* ROADMAP */
+  .road{position:relative; margin-left:8px; padding-left:24px; border-left:2px solid var(--line);}
+  .road .it{position:relative; padding:0 0 18px;}
+  .road .it:before{content:""; position:absolute; left:-31px; top:3px; width:13px; height:13px; border-radius:50%; background:#fff; border:3px solid var(--blue);}
+  .road .it .ph{font-size:12px; font-weight:800; color:var(--blue); letter-spacing:.05em;}
+  .road .it h3{margin:2px 0 3px; font-size:15px; color:var(--navy);}
+  .road .it p{margin:0; font-size:13px; color:var(--sub);}
+  /* MISC */
+  .foot{margin-top:40px; padding:20px; background:#eef2f7; border-radius:13px; font-size:12px; color:var(--sub);}
+  .foot b{color:var(--navy);}
+  .pill{display:inline-block; background:var(--gray-bg); border-radius:6px; padding:1px 7px; font-size:12px; font-weight:700; color:var(--navy);}
+  .toc{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px;}
+  .toc a{font-size:12.5px; text-decoration:none; color:var(--navy); background:#fff; border:1px solid var(--line); padding:6px 11px; border-radius:8px; font-weight:600;}
+  .toc a:hover{border-color:var(--blue); color:var(--blue);}
+  @media (max-width:760px){
+    .g3,.g2,.sim .controls,.sim .outs,.ww{grid-template-columns:1fr;}
+    .hero{padding:34px 22px 30px;} .hero h1{font-size:24px;}
+    .ww .shared{grid-column:1;}
+  }
+  @media print{
+    body{background:#fff;} .toc,.sim .presets{display:none;}
+    .hero{border-radius:0; box-shadow:none;} section{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="wrap" style="padding:0;">
+    <div class="eyebrow">YES TRAVEL · 인플루언서 공구 전략 보고서</div>
+    <h1>"우리도 리얼커플도 함께 크는" <span class="accent">마카오 상품</span>을 만드는 법<br>— 리얼커플과 함께 그리는 해외 성장 솔루션</h1>
+    <p class="sub">검증된 국내 판매 엔진(리얼커플)을 마카오로 이식해 회사·인플루언서가 동반 성장하는 구조를 설계하기 위한 대표 보고용 자료입니다. 모든 인스타그램 수치는 실측 기준이며, 추정·가설은 등급으로 명시했습니다.</p>
+    <div class="meta">
+      <span>📅 기준일 2026-06-25</span>
+      <span>🤝 협업 파트너 @real_couple0815 (리얼커플 / 전속)</span>
+      <span>👥 팔로워 16.2만 · 피드 1,281</span>
+      <span>🧩 목적 마카오 공구 동반성장 설계</span>
+      <span>🔁 이번 진행 시 3차 앵콜 · 재촬영 없음(기존 소재 재가공)</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="thesis">
+    <div class="k">한 줄 결론</div>
+    <p>리얼커플의 댓글은 <b>좋아요의 6~13배</b> — 단순 반응이 아니라 <b>"댓글→DM 링크"로 이어지는 구매 의향의 줄</b>입니다. 이미 검증된 이 <b>전환 엔진</b>에, ① 회사가 해외 콘텐츠 제작·운영을 전담해 부담을 덜고 ② 객단가 높은 마카오 상품을 더하면 <b>같은 노력으로 총 거래액이 크게 커지고</b> — 회사는 국내 포화를 넘어서고, 리얼커플의 마카오는 <b>1차에서 단 20건으로 ₩2,534만(객단가 127만)을 판 검증된 상품</b>이고 — 2차는 유류할증료 역대최고·결항 시기에 걸려 0건이었을 뿐, 이번이 3차 앵콜입니다. <span class="b b-y">'최적 시점 + 최적 전략' 기준의 성과는 이번 라운드로 함께 끌어올리는 것을 전제로 함</span></p>
+  </div>
+
+  <div class="toc">
+    <a href="#s1">1 · 왜 리얼커플인가 (실측 데이터)</a>
+    <a href="#s2">2 · 핵심 통찰: 댓글=구매 대기열</a>
+    <a href="#swhy" style="background:#fbf6e9;border-color:#ecd9a6;color:#6e5410;">★ Why Now · 지난 공구 회고</a>
+    <a href="#s3">3 · 솔루션: 어떻게 좋은 반응을 만들까</a>
+    <a href="#s4">4 · 동반성장 구조 (Win-Win)</a>
+    <a href="#s5">5 · 성장 시뮬레이션</a>
+    <a href="#s6">6 · 실행 로드맵 · KPI</a>
+    <a href="#s7">7 · 전제·리스크·출처</a>
+    <a href="#s8" style="background:#fbf6e9;border-color:#ecd9a6;color:#6e5410;">★ 8 · 결론: 이렇게 가자</a>
+  </div>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-h"><span class="no">01</span><h2>왜 리얼커플인가 — 인스타그램 실측 영향력</h2><span class="tag">받침 데이터</span></div>
+    <p class="lead">리얼커플과 마카오가 잘 맞는 이유의 근거. 외부 통계는 전면 차단되어, 아래는 <b>계정·게시물을 직접 열어 확인한 실측치</b>입니다.</p>
+
+    <div class="grid g3" style="margin-bottom:16px;">
+      <div class="statcard"><div class="v">16.2<small>만</small></div><div class="l">인스타 팔로워 (인증계정)</div><div class="src">🟢 라이브 확인 · 검색 인덱스 14.2만 → 성장</div></div>
+      <div class="statcard"><div class="v">1,281</div><div class="l">누적 피드 (게시물)</div><div class="src">🟢 콘텐츠 생산력 = 해외도 지속가능</div></div>
+      <div class="statcard"><div class="v">3<small>명</small></div><div class="l">팔로잉</div><div class="src">🟢 순수 콘텐츠·커머스 계정 신호</div></div>
+    </div>
+
+    <p class="lead" style="margin-top:18px;">게시물별 실측 인게이지먼트 — <b>'좋아요'보다 '댓글'이 압도적</b>인 게 핵심입니다.</p>
+    <table>
+      <thead><tr><th>공구 게시물</th><th>게시일</th><th class="num">좋아요</th><th class="num">댓글</th><th class="num">댓글/좋아요</th><th>등급</th></tr></thead>
+      <tbody>
+        <tr><td>🥇 풀빌라 최초공구</td><td>2026-04-15</td><td class="num">5,700</td><td class="num hot">36,000</td><td class="num">6.3배</td><td><span class="b b-g">🟢 실측</span></td></tr>
+        <tr><td>🌊 주말 1만원대 워터파크</td><td>2026-05-22</td><td class="num">2,100</td><td class="num hot">19,000</td><td class="num">9.0배</td><td><span class="b b-g">🟢 실측</span></td></tr>
+        <tr><td>🌿 계곡 5성급 키캉스 9만원대</td><td>2026-06-04</td><td class="num">612</td><td class="num hot">8,200</td><td class="num">13.4배</td><td><span class="b b-g">🟢 실측</span></td></tr>
+        <tr class="row-total"><td>평균 패턴</td><td>최근 3건</td><td class="num">≈ 2,800</td><td class="num">≈ 21,000</td><td class="num">≈ 9배</td><td><span class="b b-g">🟢</span></td></tr>
+      </tbody>
+    </table>
+    <div class="legend">
+      <span><b>참고(미실측 보조지표):</b></span>
+      <span>풀빌라 게시물 <b>50만 조회</b> <span class="b b-r">🔴 본인 자기보고</span></span>
+      <span>여기어때 라이브특가 <b>"10만명 참여"</b> <span class="b b-y">🟡 게시물 캡션</span></span>
+      <span>Threads 21.8K <span class="b b-g">🟢 저참여 보조채널</span></span>
+    </div>
+
+    <div class="callout co-blue" style="margin-top:16px;">
+      <b>콘텐츠 DNA = 마카오와 정확히 맞물림.</b> 바이오에 <b>"국내/해외 여행 · 최저가숙소 · G마켓 판매 전체 1등 2관왕·여행 4관왕"</b>을 내건 가족·숙소 특가 커머스 계정. 스토리 하이라이트엔 이미 <span class="pill">🔥해외특가🔥</span> <span class="pill">5성급 9만원</span> <span class="pill">⏰1시간 타임특가</span>가 있어, '해외 5성급 가성비'라는 마카오 메시지를 얹기 좋은 토양이 이미 깔려 있습니다.
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-h"><span class="no">02</span><h2>핵심 통찰 — 리얼커플의 댓글은 '구매 대기열'이다</h2></div>
+    <p class="lead">왜 댓글이 좋아요의 9배일까? 운영 방식이 <b>"댓글 달면 DM으로 구매 링크 발송"</b>이기 때문입니다. 즉 댓글 한 건 = 구매 의향 1명.</p>
+    <div class="grid g3">
+      <div class="card"><h3>① 후킹</h3><p>감성·가성비 카피로 "여보 이거 봐봐" 저장·공유를 유발 → 도달 확장</p></div>
+      <div class="card"><h3>② 댓글 = 전환</h3><p>"댓글 달면 링크 DM" 장치로 <b>관심을 구매 의향으로 전환</b>. 그래서 댓글 수 = 구매 대기열 길이</p></div>
+      <div class="card"><h3>③ 임박·한정</h3><p>"일요일 8시 반짝특가·마감" 시한 압박으로 대기열을 결제로 전환</p></div>
+    </div>
+    <div class="callout co-gold" style="margin-top:16px;">
+      <b>핵심 포인트:</b> 주목할 것은 "팔로워 16.2만"이라는 숫자가 아니라 <b>"게시물 1건에 댓글 8천~3.6만 = 구매 의향 수천~수만 명을 즉시 모으는 힘"</b>입니다. 이 힘은 상품이 국내든 해외든 똑같이 작동합니다. <b>관건은 '무엇을 더하느냐'</b> — 객단가 23.6만 국내 숙소 대신 <b>객단가가 훨씬 높은 마카오 패키지</b>를 더하면, 같은 댓글 1건이 더 큰 매출로 이어집니다.
+    </div>
+  </section>
+
+  <!-- WHY NOW (sub) -->
+  <section id="swhy">
+    <div class="sec-h"><span class="no" style="background:var(--gold);color:#3a2c06;">WHY NOW</span><h2>지난 마카오 공구 회고 — '상품'이 아니라 '타이밍 × 전략'의 문제였다</h2><span class="tag">보조 컨텍스트</span></div>
+    <p class="lead">결론 먼저: <b>마카오 상품의 잠재력 문제가 아니다 — 1차에서 실제로 팔렸다(20건/₩2,534만).</b> 지난 라운드의 아쉬움은, 우리가 정할 수 없었던 '어려운 외부 시기'와 지금은 충분히 보완할 수 있는 '전략·채널 정합·가격 포지션'이 겹친 결과일 뿐이다. <span style="font-size:12px;color:var(--sub);">(※ '앵콜'은 같은 마카오 공구를 2·3차로 다시 여는 사내 용어 — 고객 요청이 아니라 '재가동' 횟수)</span></p>
+    <div class="callout co-green" style="margin-bottom:18px;"><b>수요는 '앵콜'이 아니라 '실판매'가 증명합니다.</b> 마카오 수요의 근거는 숫자예요 — <b>리얼커플 1차 20건/₩2,534만</b>, <b>전사 마카오 환불 전 ₩19억</b>. 검증 안 된 신상이 아니라 <b>실제로 팔린 상품을 '제대로 된 조건'에서 다시 진행</b>하는 것이 이번 제안입니다.</div>
+
+    <h3 style="font-size:15px;color:var(--navy);margin:6px 0 12px;">왜 그땐 아쉬웠나 — 4가지 역풍이 동시에</h3>
+    <div class="grid g2" style="margin-bottom:18px;">
+      <div class="card" style="border-left:4px solid var(--red);">
+        <h3>① 외부·통제불가 — 해외여행 최악의 타이밍</h3>
+        <p>중동(이란) 분쟁 여파로 <b>항공유 배럴당 200달러 안팎(전쟁 전 대비 약 2배)</b>, 2026년 4월 한국발 국제선 <b>유류할증료 18단계 = 2016년 거리비례제 도입 이후 역대 최고</b>. 영공 폐쇄·우회·급유 제한으로 <b>무더기 감편·결항</b>(인천–나트랑 취소 등). "갔다가 못 오면?" 불안이 극에 달한 시기 = 해외 상품에 구조적으로 가장 불리.</p>
+        <span class="b b-g" style="margin-top:8px;display:inline-block;">🟢 거시 사실(외부 출처)</span>
+      </div>
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <h3>② 홍보 전략 보완 필요</h3>
+        <p>해외 상품에 필요한 <b>루트·가격·혜택 콘텐츠 구성을 회사가 충분히 준비하지 못함</b>. 결항·환불·무비자·소요시간 등 <b>'불안 해소' 콘텐츠가 빠져</b> 가장 큰 구매 망설임을 풀어주지 못함. 국내에서 통한 <b>댓글→DM 흐름을 해외 버전으로 살리지 못함.</b></p>
+        <span class="b b-y" style="margin-top:8px;display:inline-block;">🟡 전략 해석</span>
+      </div>
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <h3>③ 채널 정체성 전환기</h3>
+        <p>리얼커플은 <b>커플 채널</b>에서 출발해, 아이가 생기며 <b>가족·육아 채널로 자리를 옮겨가던 시기</b>에 마카오 공구가 진행됐다. 채널 색깔이 바뀌는 구간이라 메시지가 한 곳에 모이기 어려운 타이밍이었다.</p>
+        <span class="b b-y" style="margin-top:8px;display:inline-block;">🟡 내부 진단</span>
+      </div>
+      <div class="card" style="border-left:4px solid var(--yellow);">
+        <h3>④ 초가성비 포지셔닝 → 고가 상품 진입 난이도</h3>
+        <p>그동안 <b>초가성비 특가 중심으로 채널이 포지셔닝</b>되며 주 가격대가 <b>만원대~십만원대</b>로 형성됐다. 그래서 가격대가 있는 해외 패키지는 <b>전환까지 더 많은 설득이 필요했던</b> 측면이 있다.</p>
+        <span class="b b-y" style="margin-top:8px;display:inline-block;">🟡 내부 진단</span>
+      </div>
+    </div>
+
+    <div class="callout co-gold" style="margin-bottom:16px;">
+      <b>📊 실측 — 리얼커플 마카오 성적표 (전체 공구 데이터).</b> <b>1차(2025-09): 단 20건으로 ₩2,534만</b> — 객단가 <b>127만원(국내의 4~6배)</b>으로, 국내 켄싱턴평창 112건(₩2,336만)보다 큰 매출. <b>해외도 팔린다는 증거</b>입니다. 반면 <b>2차(2026-05): 0건</b> — 유류할증료 역대최고·결항 시기에 걸렸습니다. <b>결정적으로, 같은 2026년 5월에 국내는 폭발</b>했어요(썬웨이워터파크 283건/₩3,568만). <b>→ 채널이 죽은 게 아니라, 마카오 2차만 외부 악재에 무너진 것.</b> 이번이 3차 앵콜입니다.<br><span style="font-size:11.5px;color:#8a6d12;">전체 공구 33회차·누적 ₩6.3억 중 해외 비중은 4%뿐 — 그만큼 남은 업사이드가 큽니다.</span>
+    </div>
+    <div class="callout co-blue" style="margin-bottom:16px;">
+      <b>데이터로도 보입니다.</b> 현재 피드는 키캉스·키즈카페·워터파크·카시트 등 <b>가족·육아 콘텐츠가 중심</b>이고 바이오도 "아이와 가족여행" — ③ 가족 채널로의 전환이 상당히 자리잡았다는 신호. 또 주로 노출되는 가격대가 <b>1만원대~9만원대</b>(워터파크 1만·오션뷰 4만·5성급 9만)라 ④ 초가성비 포지셔닝도 실제로 확인됩니다.
+    </div>
+
+    <h3 style="font-size:15px;color:var(--navy);margin:18px 0 10px;">왜 지금은 다른가 — 통제 가능한 3개를 교정하면 포텐셜이 산다</h3>
+    <table>
+      <thead><tr><th>변수</th><th>그때 (역풍)</th><th>지금의 해법 / 전망</th></tr></thead>
+      <tbody>
+        <tr><td><b>외부 타이밍</b><br><span style="font-size:11px;color:var(--sub)">통제 불가</span></td><td>유가·유류할증료 최고점, 무더기 결항</td><td>변동성 큰 변수 → <b>완화되는 '창'에서 점화</b>. 그전까지 전략을 미리 장전 = 선제 대응 <span class="b b-y">🟡 출시 전 재확인</span></td></tr>
+        <tr><td><b>홍보 전략</b><br><span style="font-size:11px;color:var(--sub)">통제 가능</span></td><td>콘텐츠 준비·불안해소·엔진 점화 부족</td><td>본 보고서 <b>솔루션 6단계 전면 적용</b>(콘텐츠 키트·장벽제거·댓글엔진·기존 소재 재편집)</td></tr>
+        <tr><td><b>채널 정체성</b><br><span style="font-size:11px;color:var(--sub)">통제 가능</span></td><td>커플→가족 채널 전환기, 메시지 분산</td><td>지금은 <b>가족 채널로 자리잡음 → 가족형 마카오(키즈 친화 갤럭시·테마파크)와 오히려 정합</b></td></tr>
+        <tr><td><b>가격 포지션</b><br><span style="font-size:11px;color:var(--sub)">통제 가능</span></td><td>초가성비 중심 → 고가 상품 진입 난이도</td><td><b>'최저가'가 아니라 '국내값에 해외 5성급' = 가성비·가치로 리포지셔닝</b> + 진입 가격대 상품부터 단계적 브릿지</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout co-gold" style="margin-top:16px;">
+      <b>핵심 메시지.</b> 지난번은 <b>좋은 상품이 가장 어려운 시기에, 충분한 준비 없이</b> 나간 경우였습니다. 상품의 잠재력이 부족했던 게 아니라 제대로 보여줄 기회를 만나지 못했을 뿐. <b>타이밍은 우리가 정할 수 없지만, 전략·채널 정합·가격 포지션 3가지는 지금 바로 함께 만들 수 있고</b> — 채널은 그때보다 커졌고(16.2만·검증된 전환력), 가족 채널로의 전환은 가족형 마카오와 맞물립니다. <b>미리 준비해두면, 외부 환경이 열리는 순간 가장 먼저 출발할 수 있습니다.</b>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-h"><span class="no">03</span><h2>솔루션 — 마카오 상품을 '어떻게 홍보시켜 좋은 반응'을 만들까</h2><span class="tag">실행 플레이북</span></div>
+    <p class="lead">핵심 원칙: <b>리얼커플에게 새로운 역량을 요구하지 않는다.</b> 국내에서 이미 통한 공식을 그대로 살리고, 회사가 해외의 '막막함'을 전부 덜어 드린다.</p>
+
+    <div class="step"><div class="n">1</div><div class="body">
+      <h3>검증된 국내 포맷을 그대로 '번역'</h3>
+      <p>새 문법을 만들지 말 것. "계곡 5성급 9만원" → <b>"비행 3시간, 해외 5성급 갤럭시를 국내 풀빌라값에"</b>로 후킹만 치환. 리얼커플이 가장 잘하는 가성비·감성 후킹을 마카오에 그대로 살린다. <b>단, '최저가'가 아니라 '국내값에 해외 5성급'이라는 가치/가성비로 프레임을 올려</b>, 그동안의 초가성비 포지셔닝에서 오는 가격 망설임을 자연스럽게 넘는다(진입 가격대 상품부터 단계적으로).</p>
+      <span class="ev">근거: 동일 포맷 3건 모두 댓글 8천~3.6만 달성 · 초가성비 포지셔닝 보완</span>
+    </div></div>
+
+    <div class="step"><div class="n">2</div><div class="body">
+      <h3>회사가 '콘텐츠 풀패키지'를 전담 제작해 드린다</h3>
+      <p>해외 진입의 진짜 장벽은 촬영·정보가 아니라 <b>"뭘 어떻게 보여줄지 막막함"</b>. 회사가 일정표·가격표·혜택구성·<b>썸네일·릴스 초안·자막 후킹 문구·판매링크·CS 매뉴얼</b>까지 키트로 준비해 드리고, <b>리얼커플은 본인의 강점인 감성·후킹에만 집중</b>합니다.</p>
+      <span class="ev">근거: 감성·라이프스타일 콘텐츠는 상품 정보 구성이 잘 갖춰지면 전환력이 큼</span>
+    </div></div>
+
+    <div class="step"><div class="n">3</div><div class="body">
+      <h3>'해외인데 국내처럼 쉬움'을 콘텐츠로 못박기</h3>
+      <p>장벽 제거형(저장 유도) 콘텐츠를 1편 선행: <b>무비자 90일 · 비행 3시간 · 에어마카오 직항 · 환전/유심/짐 체크리스트</b>. 리얼커플의 '천연어항 모음zip(저장각)' 같은 정보형 포맷이 이미 먹히는 채널.</p>
+      <span class="ev">근거: 저장·공유 유도 정보형 콘텐츠가 도달 확장에 작동(천연어항 사례)</span>
+    </div></div>
+
+    <div class="step"><div class="n">4</div><div class="body">
+      <h3>'직접 다녀온' 신뢰 콘텐츠 = 기존 앵콜 소재 재활용 (재촬영 없음)</h3>
+      <p>리얼커플은 이미 마카오를 다녀와 <b>1·2차 앵콜 콘텐츠를 보유</b>. 별도 재촬영·출장 없이, 회사가 그 소재를 이번 상품 메시지에 맞춰 <b>재편집·재구성</b>해 '직접 다녀온' 신뢰 콘텐츠를 확보. 단순 광고가 아닌 후기 톤이라 전환율↑, 추가 비용·부담은 최소.</p>
+      <span class="ev">근거: 3차 앵콜 = 기존 마카오 촬영분 보유 · 재촬영 계획 없음</span>
+    </div></div>
+
+    <div class="step"><div class="n">5</div><div class="body">
+      <h3>반응 설계 — 댓글 엔진을 마카오에 맞춰 점화</h3>
+      <p>① <b>댓글 이벤트</b>: "댓글에 <i>마카오</i> 남기면 일정표·특가 DM" → 구매 대기열 모으기 · ② <b>임박 타임특가</b>(일/월 저녁 8시 반짝) → 결제 전환 · ③ <b>한정 객실/좌석</b> 희소성 · ④ 미사용 자동환불 등 안심 장치.</p>
+      <span class="ev">근거: 국내 공구의 댓글→DM→임박특가 전환 메커니즘 그대로</span>
+    </div></div>
+
+    <div class="step"><div class="n">6</div><div class="body">
+      <h3>리스크와 운영은 회사가 책임진다</h3>
+      <p>24시간 지원 + 1:1 전담 매니저 + 발권·CS 전부 회사 처리. 리얼커플은 본인이 가장 잘하는 콘텐츠에만 집중. <b>파일럿 1건(한정 객실)</b>으로 부담 없이 첫 해외 레퍼런스를 함께 만듭니다.</p>
+      <span class="ev">근거: 마카오 안내서 — 24h 지원·1:1 매니저 명시</span>
+    </div></div>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-h"><span class="no">04</span><h2>동반성장 구조 — 우리도, 리얼커플도 함께 크는 이유</h2><span class="tag">Win-Win</span></div>
+    <p class="lead">이 마카오 상품이 '좋은 상품'인 이유는 한쪽만 이기지 않기 때문입니다. 같은 엔진으로 양쪽이 동시에 커집니다.</p>
+    <div class="ww">
+      <div class="col company">
+        <h3>회사가 가져가는 것</h3>
+        <ul>
+          <li>국내 포화·단가 하락(아산 YoY −40%대) <b>탈출 → 신규 매출축</b></li>
+          <li>객단가 ↑ : 국내 23.6만 → 마카오 패키지(항공+호텔)로 <b>건당 매출 수배</b></li>
+          <li>에어마카오·갤럭시 <b>직계약 공급망의 실제 가동</b>(이미 깔린 인프라 회수)</li>
+          <li><b>'제대로 된' 해외 성공 레퍼런스</b> 확보 → 다른 전속 파트너로 복제 확산</li>
+          <li>국내 가격경쟁(네이버 덤핑) 무관한 <b>해외 독점 상품으로 마진 방어</b></li>
+        </ul>
+      </div>
+      <div class="col influ">
+        <h3>리얼커플이 가져가는 것</h3>
+        <ul>
+          <li>반응 있던 마카오를 더 좋은 조건에서 재가동 = <b>콘텐츠 차별화·해외 포지션 강화</b></li>
+          <li>객단가 ↑ → <b>같은 댓글 수로 커미션 수입 증가</b></li>
+          <li>'국내 숙소 인플' → <b>'해외까지 파는 인플'로 브랜드 가치 상승</b></li>
+          <li>회사가 콘텐츠·CS를 전담 → <b>제작 부담 최소, 리스크 0</b></li>
+          <li>첫 성공 시 <b>해외 라인업 우선권</b>(독점적 신상품 확보)</li>
+        </ul>
+      </div>
+      <div class="shared">공통 동력 = "댓글 = 구매 대기열" 엔진에 <b>객단가 높은 상품</b>을 더한다 → 같은 노력, 더 큰 총 거래액</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-h"><span class="no">05</span><h2>성장 시뮬레이션 — 레버를 당기면 양쪽이 큰다</h2><span class="tag">가정값 · 예측 아님</span></div>
+    <p class="lead">아래는 <b>예측이 아니라 구조 시뮬레이터</b>입니다. 슬라이더로 가정을 바꿔 회사 총 거래액과 인플루언서 커미션이 함께 움직이는 걸 보여줍니다. 실측 전환율은 파일럿으로 확보합니다.</p>
+    <div class="sim">
+      <div class="presets">
+        <button data-p="cons">보수 시나리오</button>
+        <button data-p="base" class="on">기본 시나리오</button>
+        <button data-p="aggr">공격 시나리오</button>
+      </div>
+      <div class="controls">
+        <div class="ctl"><label>도달률 <span class="val" id="vReach">25%</span></label><input type="range" id="reach" min="5" max="50" step="1" value="25"><div style="font-size:11px;color:#9aa7b8">팔로워 16.2만 중 게시물이 도달하는 비율</div></div>
+        <div class="ctl"><label>구매 전환율 <span class="val" id="vConv">0.10%</span></label><input type="range" id="conv" min="5" max="100" step="5" value="10"><div style="font-size:11px;color:#9aa7b8">도달 인원 대비 실제 예약 전환 (값÷100 = %)</div></div>
+        <div class="ctl"><label>객단가(건당) <span class="val" id="vAov">127만원</span></label><input type="range" id="aov" min="80" max="220" step="1" value="127"><div style="font-size:11px;color:#9aa7b8">마카오 항공+호텔 1예약 매출(만원) · 1차 실측 127만</div></div>
+        <div class="ctl"><label>인플루언서 커미션율 <span class="val" id="vCom">10%</span></label><input type="range" id="com" min="5" max="20" step="1" value="10"><div style="font-size:11px;color:#9aa7b8">총 거래액 대비 인플루언서 정산 비율</div></div>
+      </div>
+      <div class="outs">
+        <div class="out"><div class="ov" id="oBook">—</div><div class="ol">예상 예약 건수</div></div>
+        <div class="out"><div class="ov" id="oGmv">—</div><div class="ol">회사 총 거래액</div></div>
+        <div class="out influ"><div class="ov" id="oCom">—</div><div class="ol">인플루언서 커미션</div></div>
+      </div>
+      <div class="legend" style="margin-top:14px;"><span>※ 도달률·전환율은 <b>가정</b>(🟡). <b>객단가 127만원은 리얼커플 마카오 1차 실측</b>(20건/₩2,534만). 보수 시나리오(약 24건)는 1차 수준 재현, 그 이상은 커진 채널·전략·타이밍 개선분.</span></div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="s6">
+    <div class="sec-h"><span class="no">06</span><h2>실행 로드맵 · KPI</h2></div>
+    <div class="grid g2">
+      <div>
+        <div class="road">
+          <div class="it"><div class="ph">STEP 0 · 즉시</div><h3>인사이트 확보</h3><p>리얼커플에게 인스타 인사이트(도달·저장·프로필 방문·링크 클릭) 공유 요청 → 가정값을 실측으로 교체.</p></div>
+          <div class="it"><div class="ph">STEP 1 · 1~2주</div><h3>기존 마카오 소재 재가공 + 콘텐츠 키트</h3><p>재촬영 없이 1·2차 앵콜 영상을 재편집 + 회사가 일정표·가격·썸네일·자막·링크 패키지 제작.</p></div>
+          <div class="it"><div class="ph">STEP 2 · D-7</div><h3>장벽 제거 선행 콘텐츠</h3><p>무비자·3시간·체크리스트형(저장 유도) 1편으로 '해외=쉬움' 인식을 먼저 심기.</p></div>
+          <div class="it"><div class="ph">STEP 3 · 파일럿</div><h3>마카오 공구 1건(한정 객실)</h3><p>댓글 이벤트 + 임박 타임특가로 점화. 매니저 전담·24h 지원.</p></div>
+          <div class="it"><div class="ph">STEP 4 · 이후</div><h3>실측→확대→복제</h3><p>전환율 실측 확보 후 라인업 확대, 타 전속으로 복제.</p></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:14px;"><h3>성패 측정 KPI (게시 전후 비교)</h3>
+          <table style="border:none; box-shadow:none;">
+            <tbody style="font-size:13px;">
+              <tr><td>댓글 수</td><td class="num">≥ 국내 공구 평균(8천~2만)</td></tr>
+              <tr><td>저장·공유</td><td class="num">장벽제거 콘텐츠 도달 지표</td></tr>
+              <tr><td>프로필 방문 → 링크 클릭</td><td class="num">관심→행동 전환</td></tr>
+              <tr><td>예약 전환 / 객단가</td><td class="num">최종 총 거래액</td></tr>
+              <tr><td>국내 대비 객단가 배수</td><td class="num">동반성장 핵심 지표</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout co-green"><b>의사결정 요청.</b> 리스크가 낮은 <b>마카오 파일럿 1건(한정 객실 · 콘텐츠 키트 · 매니저 전담)</b> 승인. 비용은 콘텐츠 재편집·키트 제작 한정, 상한이 명확하고 실패해도 학습 데이터(실측 전환율)가 남습니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="s7">
+    <div class="sec-h"><span class="no">07</span><h2>전제 · 리스크 · 출처</h2></div>
+    <div class="grid g2">
+      <div class="callout co-red">
+        <b>정직한 리스크 (보고 시 함께 제시)</b><br>
+        • 마카오는 1차에서 검증(20건/₩2,534만)됐으나 2차는 0건(악재기) — <b>'최적 시점 + 최적 전략' 조건의 안정적 성과는 아직 미확인</b>, 이번 라운드로 확인 필요. 🟡<br>
+        • 객단가↑·결제 장벽 — 발권·환율·CS 복잡도가 국내보다 높아 전환율이 낮을 수 있음. 🟡<br>
+        • 콘텐츠 준비 중요 — 회사가 키트를 충분히 준비하지 못하면 전환이 어려울 수 있음. 🟢<br>
+        • '국내 포화'는 아산스파포레 단일 사례 근거(매출 미검증) — 시장 전체 하락으로 확대 해석 금물. 🟡<br>
+        • 채널이 가족 중심으로 자리잡는 전환기 + 초가성비 포지셔닝 특성상, 고가 해외 상품은 전환에 더 많은 설득이 필요할 수 있음. 🟡<br>
+        • 외부 변수(유가·유류할증료·결항) 변동성 큼 — 2026년 4월 유류할증료 역대 최고였던 만큼, 출시 시점 환경 재확인 필요. 🟡<br>
+        • 시뮬레이션 수치는 가정값 — 예측 아님. 🟡
+      </div>
+      <div class="callout co-blue">
+        <b>데이터 출처</b><br>
+        • 인스타 실측(팔로워·피드·게시물별 좋아요/댓글): <b>@real_couple0815 계정·게시물 직접 확인 (2026-06-25 라이브)</b> 🟢<br>
+        • 국내 공구 객단가 23.6만·아산 하락: 예스트래블 내부 운영자료·매출 리포트 🟢(내부 단독)<br>
+        • 해외 인프라(에어마카오·갤럭시 직계약·24h·1:1·무비자·3시간): 마카오 공동구매 안내서 🟢<br>
+        • 50만 조회 🔴(자기보고) · 10만명 참여 🟡(캡션) — 보조지표<br>
+        <span style="font-size:11.5px; color:#5b6c83;">※ 외부 통계 사이트(Social Blade·picuki 등)는 전면 차단(403/404)으로 ER·시계열은 미산출. 정밀 반응도는 인플 인사이트로 확보 권장.</span>
+      </div>
+    </div>
+    <div class="foot">
+      <b>데이터 기준.</b> 인스타그램 수치는 2026-06-25 직접 확인 실측 · 매출은 리얼커플 전체 공구표(예스트래블 내부, 33회차) · 마카오 실적은 사내 매출 보고서 기준. 추정·가설은 본문에 등급(🟢확정/🟡추정/🔴미확인)으로 표기했습니다.
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section id="s8">
+    <div class="sec-h"><span class="no" style="background:var(--gold);color:#3a2c06;">결론</span><h2>이렇게 가면 — 우리도, 대표님도, 리얼커플도 이긴다</h2><span class="tag">함축 요약 + 방향</span></div>
+    <p class="lead">데이터는 길었지만 결론은 짧습니다. <b>이미 끝난 논쟁 3가지</b>와 <b>가야 할 방향 하나</b>.</p>
+
+    <div class="grid g3" style="margin-bottom:16px;">
+      <div class="card" style="border-top:4px solid var(--green);"><h3>① 채널은 검증됐다</h3><p>게시물 1건에 댓글 <b>8천~3.6만</b> = 즉시 소집되는 <b>구매 대기열</b>. 16.2만 팔로워·1,281 피드의 살아있는 전환 엔진.</p></div>
+      <div class="card" style="border-top:4px solid var(--green);"><h3>② 상품은 검증됐다</h3><p>마카오 1차 <b>20건/₩2,534만</b>·객단가 <b>127만</b>(국내 4~6배). 전사로도 수요 폭발(환불 전 ₩19억).</p></div>
+      <div class="card" style="border-top:4px solid var(--green);"><h3>③ 실패 원인은 규명됐다</h3><p>2차 0건은 <b>채널이 아니라 외부 타이밍</b>(유류할증료 최고·결항). 같은 달 국내는 폭발했음.</p></div>
+    </div>
+
+    <div style="background:linear-gradient(135deg,var(--navy),#1c3c63);color:#eaf1fc;border-radius:16px;padding:24px 26px;margin-bottom:16px;box-shadow:0 14px 40px -22px rgba(15,39,71,.5);">
+      <div style="color:var(--gold);font-weight:800;font-size:12.5px;letter-spacing:.12em;margin-bottom:10px;">SO WHAT — 방향은 하나다</div>
+      <p style="margin:0;font-size:15.5px;line-height:1.75;color:#eaf1fc;"><b>재촬영 없이</b> 기존 마카오 소재를 회사가 키트로 재가공 → <b>'최저가'가 아닌 '국내값에 해외 5성급'</b> 가치로 리포지셔닝 → 가족 채널에 맞는 <b>가족형 마카오</b> → <b>댓글 엔진 점화</b>(댓글 이벤트·임박 타임특가) → <b>외부 환경이 우호적인 창</b>에서 출발 → <b>리스크 낮은 파일럿 1건</b>으로 1차(20건)를 넘어선다.</p>
+    </div>
+
+    <div class="grid g3" style="margin-bottom:16px;">
+      <div class="card" style="border-top:4px solid var(--navy);"><h3>🏢 회사</h3><p>국내 포화 탈출 + <b>객단가 4~6배</b> 신규 매출축 + 복제 가능한 해외 성공 레퍼런스</p></div>
+      <div class="card" style="border-top:4px solid var(--navy);"><h3>🧑‍💼 대표님</h3><p>재촬영X·파일럿 1건 = <b>큰 비용·리스크 없이</b> 실측 전환율 확보 → 데이터 기반 의사결정</p></div>
+      <div class="card" style="border-top:4px solid var(--teal);"><h3>⭐ 리얼커플</h3><p>강점(감성·댓글 엔진)에만 집중, 나머지는 회사가 → <b>해외까지 파는 인플로 포지션↑ + 커미션↑</b></p></div>
+    </div>
+
+    <div class="callout co-gold">
+      <b>한 줄로.</b> 지난번은 '안 좋은 때, 충분한 준비 없이'였습니다. 이번엔 <b>검증된 채널 × 검증된 상품 × 규명된 원인</b>을 손에 쥐고 <b>준비된 상태로 출발</b>합니다. 셋 다 이기는 단 하나의 다음 수 — <b>마카오 파일럿 1건.</b>
+    </div>
+  </section>
+</div>
+
+<script>
+  const P = {
+    cons:{reach:15,conv:10,aov:110,com:8},
+    base:{reach:25,conv:10,aov:127,com:10},
+    aggr:{reach:35,conv:15,aov:140,com:12}
+  };
+  const FOLLOWERS = 162000;
+  const $ = id => document.getElementById(id);
+  const won = v => v>=10000 ? (v/10000).toLocaleString('ko-KR',{maximumFractionDigits:1})+'억' : v.toLocaleString('ko-KR')+'만';
+  function calc(){
+    const reach=+$('reach').value, conv=+$('conv').value, aov=+$('aov').value, com=+$('com').value;
+    $('vReach').textContent=reach+'%';
+    $('vConv').textContent=(conv/100).toFixed(2)+'%';
+    $('vAov').textContent=aov+'만원';
+    $('vCom').textContent=com+'%';
+    const books = FOLLOWERS*(reach/100)*(conv/10000);
+    const gmvMan = books*aov;             // 만원 단위
+    const comMan = gmvMan*(com/100);
+    $('oBook').textContent = Math.round(books).toLocaleString('ko-KR')+'건';
+    $('oGmv').textContent = won(Math.round(gmvMan));
+    $('oCom').textContent = won(Math.round(comMan));
+  }
+  function setPreset(name){
+    const p=P[name]; $('reach').value=p.reach; $('conv').value=p.conv; $('aov').value=p.aov; $('com').value=p.com;
+    document.querySelectorAll('.presets button').forEach(b=>b.classList.toggle('on',b.dataset.p===name));
+    calc();
+  }
+  document.querySelectorAll('.presets button').forEach(b=>b.addEventListener('click',()=>setPreset(b.dataset.p)));
+  ['reach','conv','aov','com'].forEach(id=>$(id).addEventListener('input',()=>{
+    document.querySelectorAll('.presets button').forEach(b=>b.classList.remove('on')); calc();
+  }));
+  calc();
+</script>
+</body>
+</html>

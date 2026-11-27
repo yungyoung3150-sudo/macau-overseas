@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인천(ICN) 출발 일본 직항 — 도시 규모별 · 취항 항공사 정리</title>
+<style>
+  :root{
+    --bg:#f4f6fb; --card:#ffffff; --ink:#1c2433; --sub:#5b6678; --line:#e6eaf2;
+    --t1:#0b3d91; --t1bg:#eaf0fb;
+    --t2:#0d7a6f; --t2bg:#e6f6f3;
+    --t3:#9a6b00; --t3bg:#fbf3df;
+    --t4:#8a3ffc; --t4bg:#f3ecff;
+    --warn:#c0392b; --warnbg:#fdecea;
+    --ok:#1f8b4c; --okbg:#e9f7ef;
+    --shadow:0 1px 3px rgba(20,30,55,.06),0 6px 24px rgba(20,30,55,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Segoe UI",Roboto,sans-serif;
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:32px 20px 80px}
+  header.top{margin-bottom:20px}
+  .kicker{font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--t1);text-transform:uppercase}
+  h1{font-size:30px;margin:6px 0 6px;letter-spacing:-.02em}
+  .meta{color:var(--sub);font-size:13.5px}
+  .meta b{color:var(--ink)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .n{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .stat .l{font-size:12.5px;color:var(--sub);margin-top:2px}
+
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:18px 18px 8px;margin-bottom:22px}
+  .panel h2{font-size:15px;margin:0 0 12px;color:var(--sub);font-weight:700;letter-spacing:.01em}
+
+  /* controls */
+  .controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 18px}
+  .controls input[type=search]{flex:1;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;background:#fff;color:var(--ink)}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+  .seg button{border:0;background:#fff;padding:9px 12px;font-size:13px;cursor:pointer;color:var(--sub);font-weight:600}
+  .seg button.on{background:var(--t1);color:#fff}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 11px;font-size:12.5px;cursor:pointer;color:var(--sub);font-weight:600}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  /* tier section */
+  .tier{margin-bottom:26px}
+  .tier-h{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;padding:8px 12px;border-radius:12px}
+  .tier-h .tag{font-weight:800;font-size:14px;padding:3px 10px;border-radius:8px}
+  .tier-h .desc{font-size:13px;color:var(--sub)}
+  .t1 .tag{background:var(--t1bg);color:var(--t1)} .t1.tier-h{background:var(--t1bg)}
+  .t2 .tag{background:var(--t2bg);color:var(--t2)} .t2.tier-h{background:var(--t2bg)}
+  .t3 .tag{background:var(--t3bg);color:var(--t3)} .t3.tier-h{background:var(--t3bg)}
+  .t4 .tag{background:var(--t4bg);color:var(--t4)} .t4.tier-h{background:var(--t4bg)}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  thead th{font-size:12px;color:var(--sub);text-align:left;padding:10px 12px;background:#fafbfe;border-bottom:1px solid var(--line);font-weight:700;white-space:nowrap}
+  tbody td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:13.5px}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#fafcff}
+  .city{font-weight:700}
+  .apt{color:var(--sub);font-size:12.5px}
+  .iata{display:inline-block;font-variant:all-small-caps;font-weight:800;letter-spacing:.04em;font-size:13px;color:var(--ink);background:#eef1f7;border-radius:6px;padding:1px 7px}
+  .pop{color:var(--sub);font-size:12.5px;white-space:nowrap}
+  .note{color:var(--sub);font-size:12.5px;line-height:1.45}
+
+  /* airline badges */
+  .als{display:flex;flex-wrap:wrap;gap:5px}
+  .al{font-size:11.5px;font-weight:800;color:#fff;border-radius:6px;padding:2px 7px;letter-spacing:.02em;white-space:nowrap}
+  .al small{font-weight:600;opacity:.85;font-size:10px;margin-left:3px;letter-spacing:0}
+  .none{font-size:12px;font-weight:700;color:var(--warn);background:var(--warnbg);border-radius:6px;padding:2px 8px}
+
+  .badge{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:middle}
+  .b-sus{background:var(--warnbg);color:var(--warn)}
+  .b-sea{background:var(--t4bg);color:var(--t4)}
+  .b-new{background:var(--okbg);color:var(--ok)}
+  .b-cav{background:#fff3e0;color:#b25e00}
+
+  /* airline ranking bars */
+  .bars{display:grid;gap:7px}
+  .bar{display:grid;grid-template-columns:128px 1fr 30px;align-items:center;gap:10px;font-size:12.5px}
+  .bar .nm{color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar .track{background:#eef1f7;border-radius:6px;height:14px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px}
+  .bar .ct{text-align:right;color:var(--sub);font-weight:700}
+
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .legend .li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--sub)}
+  .legend .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  /* korean visitor share cell */
+  .krc{display:flex;flex-direction:column;gap:3px;min-width:150px}
+  .krrow{display:flex;align-items:center;gap:6px}
+  .krpct{font-weight:800;font-size:12.5px;color:#fff;border-radius:6px;padding:2px 8px;min-width:48px;text-align:center}
+  .krna{font-weight:800;font-size:12px;color:var(--sub);background:#eef1f7;border-radius:6px;padding:2px 9px}
+  .krrank{font-size:11px;font-weight:800;border-radius:999px;padding:1px 8px;white-space:nowrap}
+  .r1{background:#fff2cc;color:#9a6b00} .r2{background:#e7edf6;color:#3a4a63} .rx{background:#f1f4f9;color:#8a93a3}
+  .kryr{font-size:10px;color:#9aa3b2;font-weight:700;white-space:nowrap}
+  .krn{font-size:11.5px;color:var(--sub);line-height:1.35}
+  .star{color:#c0392b;font-weight:800}
+  .panel .sub{font-size:12px;color:var(--sub);margin:-6px 0 12px}
+
+  footer{margin-top:26px;font-size:12.5px;color:var(--sub);line-height:1.6}
+  footer h3{font-size:13.5px;color:var(--ink);margin:18px 0 6px}
+  footer a{color:var(--t1)}
+  .src{display:flex;flex-direction:column;gap:3px}
+  .hide{display:none!important}
+  @media (max-width:720px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    h1{font-size:24px}
+    thead th:nth-child(5),tbody td:nth-child(5){display:none} /* hide 비고 on mobile */
+    .bar{grid-template-columns:96px 1fr 26px}
+  }
+  @media print{body{background:#fff}.controls,.legend{display:none}.panel,.stat,table{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="kicker">YES TRAVEL · 노선 레퍼런스</div>
+    <h1>인천(ICN) 출발 일본 직항 — 도시 규모별 · 취항 항공사</h1>
+    <div class="meta">
+      기준일 <b>2026-06-24</b> · 분류 기준: <b>도시 인구 + 일본 정령지정도시 등급</b>(관광허브·광역권 보조 반영) ·
+      취항사·<b>한국인 관광객 수/비중</b> 모두 멀티에이전트 웹리서치 후 <b>적대적 검증</b>(관광청 숙박여행통계 2024 확정 원본 셀값·공항 공식 시간표 등 1차 출처 교차확인) 완료.
+      운항 스케줄은 수시 변동 → 발권 전 항공사 시간표 재확인 권장.
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <section class="panel">
+    <h2>항공사별 인천발 일본 직항 취항 노선 수 (현재 운항 기준)</h2>
+    <div class="bars" id="bars"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="panel">
+    <h2>한국인 관광객 수 — 목적지권별 순위 (2024년 연 숙박객 人泊)</h2>
+    <div class="sub">관광청 숙박여행통계 <b>2024 확정값(참고제1표·종업원10인이상 시설)</b>의 도도부현별 <b>한국 국적 연인원 숙박객 수</b>를 원본 셀값으로 직접 추출. 막대 색은 한국 점유율. <b>전국 방일 한국인</b>(JNTO): 2024년 <b>882만 명</b> → 2025년 <b>946만 명</b>(+7.3%, 국가별 1위) → 2026년 1~4월 누계 <b>394만 명</b>(+22%).</div>
+    <div class="bars" id="krbars"></div>
+    <div class="legend" id="krlegend"></div>
+  </section>
+
+  <div class="controls">
+    <input type="search" id="q" placeholder="도시·공항·IATA·항공사 검색 (예: 후쿠오카, KIX, 제주)">
+    <div class="seg" id="opSeg">
+      <button data-op="all" class="on">전체</button>
+      <button data-op="active">현재 운항만</button>
+    </div>
+  </div>
+
+  <div id="tiers"></div>
+
+  <footer>
+    <h3>분류·표기 기준</h3>
+    <div>· <b>1군</b> 3대 도시권/광역권 대도시 · <b>2군</b> 정령지정도시급 지방 거점(50만~120만) · <b>3군</b> 현청 소재지급 중소도시(15만~50만) · <b>4군</b> 소도시·리조트 섬·신규/계절 노선.</div>
+    <div>· 항공사 코드는 IATA 기준이며 배지에 마우스를 올리면 항공사명이 표시됩니다. <b>코드셰어/경유는 제외</b>하고 실제 인천발 자체 운항사만 표기.</div>
+    <div>· <span class="badge b-sus" style="margin:0">운휴</span> 정기편 운휴(현재 직항 없음) · <span class="badge b-sea" style="margin:0">계절</span> 동계 등 계절 한정 · <span class="badge b-new" style="margin:0">신규</span> 최근 취항 · <span class="badge b-cav" style="margin:0">주의</span> 단항 예정 등 변동 예고.</div>
+
+    <h3>한국 관광객 수·비중 — 지표·주의</h3>
+    <div>· 지표 = <b>도도부현별 한국 국적 외국인 연인원 숙박객 수(延べ宿泊者数, 人泊)</b> 및 그 점유율. 출처는 <b>관광청 숙박여행통계조사 2024년 확정값 「참고제1표」(국적21구분·종업원10인이상 시설)</b> 원본 엑셀(001905499.xlsx)의 한국 열 셀값을 직접 추출 — 26개 도도부현 단일 기준으로 통일(추정 최소화).</div>
+    <div>· <b>人泊(연인원 숙박)</b> = "1명×박수" 누적이라 실제 사람 수보다 큼. <b>비중%</b> = 한국 人泊 ÷ 외국인 합계 人泊(같은 셀). 항공 좌석점유율이 아니라 <b>목적지의 한국시장 규모·의존도</b> 지표.</div>
+    <div>· <b>종업원 10인 이상 시설</b> 기준이라 소형 료칸·민박은 일부 제외(전 도도부현 동일 적용 → 순위·상대규모는 유효). 2025 도도부현×국적별 확정치는 미공표(2026-06-30 예정)라 <b>2024년 확정 기준</b>.</div>
+    <div>· <b>도쿄권</b>: 나리타(NRT)는 공항 소재지인 <b>치바현(24.6만 인박)</b> 기준으로 표기 — 실제 도쿄 방문수요는 <b>도쿄도 417만 인박</b>으로 압도적. 홋카이도·오키나와는 道/현 전체 공통 적용.</div>
+    <div>· 큰 흐름: 한국은 <b>2025년 946만 명으로 국가별 방일 1위</b> 유지(전국 점유율은 중국·대만 회복으로 다소 희석되나 절대 규모는 증가, 2026.1 단월 117.6만 명 사상 첫 110만 돌파).</div>
+
+    <h3>주요 변동 (검증으로 확인된 핵심)</h3>
+    <div>· <b>아사히카와</b> 아시아나 2025-10-26 운휴 / <b>하코다테</b> 제주항공 2026-06-08 운휴 → 두 노선 현재 인천발 직항 없음.</div>
+    <div>· <b>오비히로</b> 에어로케이 동계 계절편(2026-03-28 종료) → 현재 비운항, 이후 청주(CJJ)발로 전환.</div>
+    <div>· <b>이바라키</b> 에어로케이 단독 운항 중이나 <b>2026년 8월 인천발 단항 예정</b> 보도 → 운항기간 재확인 필수.</div>
+    <div>· <b>가고시마</b> 제주·이스타 2026-03 단항 → 현재 대한항공 단독(6/1~ 주3회 감편).</div>
+    <div>· <b>삿포로</b> 파라타항공(WE) 2026-07-06 신규취항 예정(현재 미반영).</div>
+
+    <h3>출처</h3>
+    <div class="src">
+      <a href="https://m.card-gorilla.com/contents/detail/3761" target="_blank">카드고릴라 — 일본 직항 총정리</a>
+      <a href="https://www.hankyung.com/article/202511117247h" target="_blank">한국경제 — 인천~오비히로·이바라키 취항, 일본 31개 노선</a>
+      <a href="https://www.travelandtourworld.com/news/article/incheon-international-airport-surpasses-tokyo-haneda-as-the-ultimate-gateway-for-korean-travelers-to-unexplored-regional-japan-with-32-direct-routes/" target="_blank">Travel And Tour World — Incheon 32 direct routes to Japan</a>
+      <a href="https://namu.wiki/w/%ED%95%9C%EC%9D%BC%EB%85%B8%EC%84%A0" target="_blank">나무위키 — 한일노선</a>
+      <a href="https://www.mlit.go.jp/kankocho/tokei_hakusyo/shukuhakutokei.html" target="_blank">일본 관광청(観光庁) — 숙박여행통계조사(宿泊旅行統計調査)</a>
+      <a href="https://www.jnto.go.jp/statistics/data/visitors-statistics/" target="_blank">JNTO — 방일외국인통계(訪日外客数)</a>
+      <span>· 한국인 비중 검증: 관광청 숙박여행통계(2024 확정·2025 속보), 각 도도부현·시(후쿠오카·오이타·구마모토·가고시마·돗토리·나가사키시·미야자키시·센다이시·오키나와현) 공식 관광통계, 近畿/北海道/中部/四国運輸局 자료 교차확인</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ── 항공사 마스터 (IATA → 이름·색·국적)
+const AIRLINE = {
+  KE:{n:"대한항공",c:"#0b3d91",kr:1}, OZ:{n:"아시아나항공",c:"#b11e2f",kr:1},
+  "7C":{n:"제주항공",c:"#ff7a00",kr:1}, LJ:{n:"진에어",c:"#159a8c",kr:1},
+  TW:{n:"티웨이항공",c:"#e23744",kr:1}, BX:{n:"에어부산",c:"#0079a8",kr:1},
+  RS:{n:"에어서울",c:"#7b3fa0",kr:1}, ZE:{n:"이스타항공",c:"#d62598",kr:1},
+  YP:{n:"에어프레미아",c:"#21314d",kr:1}, RF:{n:"에어로케이",c:"#5a8f29",kr:1},
+  WE:{n:"파라타항공",c:"#c45c00",kr:1},
+  MM:{n:"피치항공(日)",c:"#a01f9c",kr:0}, ZG:{n:"집에어(日)",c:"#444b59",kr:0},
+  ET:{n:"에티오피아항공",c:"#1e7a3c",kr:0}
+};
+
+// ── 노선 데이터 (단일 소스) : status = active | suspended | seasonal | (badge: new/caveat)
+const TIERS = [
+  {id:"t1",tag:"1군",desc:"대도시 · 3대 도시권/광역권"},
+  {id:"t2",tag:"2군",desc:"정령지정도시급 지방 거점 (50만~120만)"},
+  {id:"t3",tag:"3군",desc:"현청 소재지급 중소도시 (15만~50만)"},
+  {id:"t4",tag:"4군",desc:"소도시 · 리조트 섬 · 신규/계절"}
+];
+
+const ROUTES = [
+  // ── 1군
+  {t:"t1",city:"도쿄",apt:"나리타 국제공항",iata:"NRT",pop:"수도권 ~3,700만",al:["KE","OZ","7C","LJ","TW","YP","ZE","RF","ZG","MM","ET"],st:"active",note:"노선·항공사 최다. OZ 2026.4~ 일4회, YP 주10회, ZG(집에어) 매일."},
+  {t:"t1",city:"도쿄",apt:"하네다 국제공항",iata:"HND",pop:"도시 ~970만",al:["KE","OZ","MM"],st:"active",note:"심야 운수권 제한(주28회 배분). 한국 LCC는 나리타로 우회."},
+  {t:"t1",city:"오사카",apt:"간사이 국제공항",iata:"KIX",pop:"게이한신권 ~1,900만",al:["KE","OZ","7C","LJ","TW","BX","RS","ZE","WE","MM"],st:"active",note:"인천발 운항편 최다급. 파라타(WE) 2025.12 신규.",badge:""},
+  {t:"t1",city:"나고야",apt:"주부 센트레아 국제공항",iata:"NGO",pop:"주쿄권 ~1,000만",al:["KE","OZ","LJ","7C"],st:"active",note:"4개사 운항. 7C만 인천T1↔나고야T2."},
+  {t:"t1",city:"삿포로",apt:"신치토세 공항",iata:"CTS",pop:"도시 ~197만",al:["KE","OZ","7C","LJ","TW","ZE"],st:"active",note:"홋카이도 최대 노선. 파라타(WE) 2026.7.6 취항 예정.",badge:""},
+  {t:"t1",city:"후쿠오카",apt:"후쿠오카 공항",iata:"FUK",pop:"도시 ~160만",al:["KE","OZ","7C","LJ","TW","BX","RS","ZE"],st:"active",note:"한국 국적사 8개사 전부 취항(규슈 최대). OZ 2026.5.8~ 일2회 증편."},
+
+  // ── 2군
+  {t:"t2",city:"고베",apt:"고베 공항",iata:"UKB",pop:"도시 ~150만",al:["KE","7C"],st:"active",note:"2025년 국제선 개시. KE 2025.4·7C 2026.6 취항. OZ는 2026.9~10 차터 예정.",badge:"new"},
+  {t:"t2",city:"히로시마",apt:"히로시마 공항",iata:"HIJ",pop:"도시 ~119만",al:["7C"],st:"active",note:"7C 단독, 일2회(주14회)."},
+  {t:"t2",city:"센다이",apt:"센다이 공항",iata:"SDJ",pop:"도시 ~110만",al:["OZ"],st:"active",note:"OZ 단독, 매일."},
+  {t:"t2",city:"기타큐슈",apt:"기타큐슈 공항",iata:"KKJ",pop:"도시 ~92만",al:["LJ"],st:"active",note:"LJ 단독(KE 코드셰어). 6/29~ 주14회 증편."},
+  {t:"t2",city:"니가타",apt:"니가타 공항",iata:"KIJ",pop:"도시 ~78만",al:["KE"],st:"active",note:"KE 단독(A321). 빈도 시기별 편차."},
+  {t:"t2",city:"구마모토",apt:"아소 구마모토 공항",iata:"KMJ",pop:"도시 ~73만",al:["KE","TW"],st:"active",note:"KE·TW 2사. OZ 2025.10 단항."},
+  {t:"t2",city:"오카야마",apt:"오카야마 모모타로 공항",iata:"OKJ",pop:"도시 ~72만",al:["KE"],st:"active",note:"KE 단독, 주4회(월·수·금·일), A220."},
+  {t:"t2",city:"시즈오카",apt:"시즈오카 공항(후지산)",iata:"FSZ",pop:"도시 ~68만",al:["7C"],st:"active",note:"7C 단독. 후지산 관문. 하계 오전편 증편."},
+  {t:"t2",city:"가고시마",apt:"가고시마 공항",iata:"KOJ",pop:"도시 ~59만",al:["KE"],st:"active",note:"7C·ZE 2026.3 단항 → KE 단독. 6/1~ 주3회 감편.",badge:"caveat"},
+
+  // ── 3군
+  {t:"t3",city:"나하(오키나와)",apt:"나하 공항",iata:"OKA",pop:"도시 ~32만 / 관광허브",al:["KE","OZ","7C","LJ","TW","ZE"],st:"active",note:"한국 6개사. 도시는 작으나 관광 수요 최상위."},
+  {t:"t3",city:"마츠야마",apt:"마쓰야마 공항",iata:"MYJ",pop:"도시 ~50만",al:["7C"],st:"active",note:"7C 단독, 매일 최대 2편."},
+  {t:"t3",city:"오이타",apt:"오이타 공항",iata:"OIT",pop:"도시 ~47만",al:["7C"],st:"active",note:"7C 단독, 주3회(화·목·토)."},
+  {t:"t3",city:"타카마츠",apt:"다카마쓰 공항",iata:"TAK",pop:"도시 ~42만",al:["RS","LJ"],st:"active",note:"RS·LJ 2사(LJ 2024.7 신규). 합산 사실상 매일."},
+  {t:"t3",city:"나가사키",apt:"나가사키 공항",iata:"NGS",pop:"도시 ~40만",al:["KE"],st:"active",note:"KE 단독. 2026.3.30~ 주3회 감편."},
+  {t:"t3",city:"미야자키",apt:"미야자키 공항",iata:"KMI",pop:"도시 ~40만",al:["OZ"],st:"active",note:"OZ 단독, 화~토."},
+  {t:"t3",city:"아사히카와",apt:"아사히카와 공항",iata:"AKJ",pop:"도시 ~32만",al:[],st:"suspended",note:"OZ 2025.10.26 운휴 → 현재 인천발 직항 없음."},
+  {t:"t3",city:"아오모리",apt:"아오모리 공항",iata:"AOJ",pop:"도시 ~27만",al:["KE"],st:"active",note:"KE 단독, 주5회. 2026 하계 A321neo 투입."},
+  {t:"t3",city:"도쿠시마",apt:"도쿠시마 공항",iata:"TKS",pop:"도시 ~25만",al:["ZE"],st:"active",note:"ZE 단독(국내 최초), 주3회(화·목·토)."},
+  {t:"t3",city:"하코다테",apt:"하코다테 공항",iata:"HKD",pop:"도시 ~24만",al:[],st:"suspended",note:"7C 2026.6.8 운휴 → 현재 인천발 직항 없음."},
+  {t:"t3",city:"사가",apt:"규슈 사가 국제공항",iata:"HSG",pop:"도시 ~23만",al:["TW"],st:"active",note:"TW 단독 직항(유일 운항사)."},
+  {t:"t3",city:"요나고",apt:"요나고 키타로 공항",iata:"YGJ",pop:"도시 ~15만 / 산인 관문",al:["RS"],st:"active",note:"RS 단독. 2025.12.23~ 매일 증편. 돗토리·산인 관문."},
+  {t:"t3",city:"코마츠",apt:"코마츠 공항",iata:"KMQ",pop:"카나자와(~46만) 관문",al:["KE"],st:"active",note:"KE 단독. 2026.3.29~ 매일. 카나자와 게이트웨이."},
+
+  // ── 4군
+  {t:"t4",city:"이시가키",apt:"신이시가키 공항",iata:"ISG",pop:"섬 ~5만 / 리조트",al:["LJ"],st:"active",note:"LJ 단독(국적사 최초), 2025.4 취항, 주5회."},
+  {t:"t4",city:"미야코지마",apt:"시모지시마 공항",iata:"SHI",pop:"섬 ~5만 / 리조트",al:["LJ"],st:"active",note:"LJ 단독(국내 최초), 2024.5 취항. 국제선 관문=시모지시마(SHI)."},
+  {t:"t4",city:"오비히로",apt:"도카치 오비히로 공항",iata:"OBO",pop:"도시 ~16만",al:[],st:"seasonal",note:"RF 동계 계절편(2026.3.28 종료) → 현재 비운항, 이후 청주발 전환.",badge:"seasonal"},
+  {t:"t4",city:"이바라키",apt:"이바라키 공항",iata:"IBR",pop:"수도권 북부 관문",al:["RF"],st:"active",note:"RF 단독, 주3회(2025.11 신규). ⚠️2026.8 인천발 단항 예정 보도.",badge:"caveat"}
+];
+
+// ── 한국인 관광객 수·비중 (IATA → 관광청 宿泊旅行統計調査 2024 확정값 참고제1표, 종업원10인이상 시설, 한국 연인원 숙박객 人泊)
+// cnt=한국 人泊 · share=한국 비중%(=한국/외국인합계, 동일 셀에서 산출) · rank=국적별 순위 · pref=목적지권 라벨
+const KR = {
+  // 홋카이도 (4개 공항 공통, 道 전체)
+  CTS:{cnt:2135780,share:23.0,rank:"1위",note:"홋카이도 道 전체. 대만·중국 회복으로 비중은 하락세",pref:"홋카이도"},
+  AKJ:{cnt:2135780,share:23.0,rank:"1위",note:"홋카이도 道 전체 기준",pref:"홋카이도"},
+  HKD:{cnt:2135780,share:23.0,rank:"1위",note:"홋카이도 道 전체(函館市 한국 27,466명)",pref:"홋카이도"},
+  OBO:{cnt:2135780,share:23.0,rank:"1위",note:"홋카이도 道 전체 기준",pref:"홋카이도"},
+  // 도호쿠
+  AOJ:{cnt:37630,share:9.7,rank:"3위",note:"대만·중국 다음 3위",pref:"아오모리"},
+  SDJ:{cnt:35910,share:4.8,rank:"6위",note:"대만 압도적, 한국 비중 낮음",pref:"미야기(센다이)"},
+  // 간토
+  HND:{cnt:4169900,share:8.8,rank:"3위권",note:"수도권 최대 규모. 중국 급증으로 순위는 하락",pref:"도쿄"},
+  NRT:{cnt:246350,share:5.7,rank:"5위",note:"공항소재=치바현 기준(도쿄권 실수요는 도쿄도 417만 인박)",pref:"치바(나리타)"},
+  IBR:{cnt:34110,share:15.0,rank:"2위",note:"한국 급증(근거리·골프), 비중 2위",pref:"이바라키"},
+  // 주부
+  NGO:{cnt:370180,share:10.5,rank:"4위",note:"중·대·홍 다음 4위",pref:"아이치(나고야)"},
+  FSZ:{cnt:111120,share:6.8,rank:"3위",note:"후지산. 중국 의존 높음, 한국 3위",pref:"시즈오카"},
+  KMQ:{cnt:41220,share:2.3,rank:"하위",note:"구미·대만 중심, 한국 비중 최저권",pref:"이시카와(코마츠)"},
+  KIJ:{cnt:29180,share:6.7,rank:"5위권",note:"대만·중국·호주 상위",pref:"니가타"},
+  // 간사이
+  KIX:{cnt:3859470,share:17.0,rank:"2위",note:"중국 다음 2위, 한국 핵심 게이트웨이",pref:"오사카"},
+  UKB:{cnt:133440,share:9.4,rank:"3위",note:"중·대 다음 3위(고베)",pref:"효고(고베)"},
+  // 주고쿠
+  OKJ:{cnt:36690,share:7.6,rank:"3~4위",note:"대만 압도적 1위",pref:"오카야마"},
+  HIJ:{cnt:123700,share:7.7,rank:"—",note:"한국=아시아권 상위(구미·호주도 큼)",pref:"히로시마"},
+  YGJ:{cnt:16150,share:16.5,rank:"3위",note:"중국·홍콩 다음, 2026 증가율 전국 1위",pref:"돗토리(요나고)"},
+  // 시코쿠
+  TAK:{cnt:149020,share:19.6,rank:"3위",note:"대만·중국 다음(세토우치)",pref:"가가와(타카마츠)"},
+  TKS:{cnt:7040,share:5.2,rank:"5위",note:"한국 소규모",pref:"도쿠시마"},
+  MYJ:{cnt:140930,share:38.4,rank:"1위",note:"시코쿠 한국 1위(도고온천)",pref:"에히메(마츠야마)"},
+  // 규슈
+  FUK:{cnt:2888160,share:42.2,rank:"1위",note:"동아시아 8할·최대 근거리 시장",pref:"후쿠오카"},
+  KKJ:{cnt:2888160,share:42.2,rank:"1위",note:"후쿠오카현 기준·한국 압도적 1위",pref:"후쿠오카"},
+  HSG:{cnt:75140,share:34.1,rank:"1위",note:"한국 압도적 1위",pref:"사가"},
+  NGS:{cnt:150600,share:29.5,rank:"1위",note:"현 전체 한국 1위",pref:"나가사키"},
+  KMJ:{cnt:353590,share:26.6,rank:"2위",note:"대만 다음 2위",pref:"구마모토"},
+  OIT:{cnt:471170,share:43.7,rank:"1위",note:"전 권역 최고 비중급(벳푸 온천)",pref:"오이타"},
+  KMI:{cnt:64280,share:41.4,rank:"1위",note:"현 전체 한국 1위(서울 증편 급증)",pref:"미야자키"},
+  KOJ:{cnt:126960,share:26.2,rank:"1위",note:"한국 1위(국제선 증편)",pref:"가고시마"},
+  // 오키나와 (3개 공항 공통)
+  OKA:{cnt:769670,share:17.6,rank:"2위",note:"대만 다음 2위(리조트 대형 시장)",pref:"오키나와"},
+  SHI:{cnt:769670,share:17.6,rank:"2위",note:"오키나와현 기준",pref:"오키나와"},
+  ISG:{cnt:769670,share:17.6,rank:"2위",note:"오키나와현 기준",pref:"오키나와"}
+};
+const krColor = v => v>=40?'#c0392b':v>=25?'#e67e22':v>=15?'#d4a017':v>=8?'#2d9d78':'#7a8699';
+const rankCls = rk => rk.indexOf('1위')===0?'r1':rk.indexOf('2위')===0?'r2':'rx';
+const manFmt = n => { const m=n/10000; return m>=100?Math.round(m)+'만':(m>=1?m.toFixed(1)+'만':n.toLocaleString()); };
+const krCell = r => {
+  const k = KR[r.iata]; if(!k) return '<span class="krna">—</span>';
+  return `<div class="krc"><div class="krrow">`+
+    `<span class="krpct" style="background:#1559b0" title="${k.cnt.toLocaleString()} 人泊">${manFmt(k.cnt)}</span>`+
+    `<span class="krpct" style="background:${krColor(k.share)}">${k.share}%</span>`+
+    `<span class="krrank ${rankCls(k.rank)}">${k.rank}</span></div>`+
+    `<div class="krn">${k.note} <span class="kryr">(2024 확정·人泊)</span></div></div>`;
+};
+
+// ── 렌더 헬퍼
+const alBadge = code => {
+  const a = AIRLINE[code]; if(!a) return "";
+  return `<span class="al" style="background:${a.c}" title="${a.n} (${code})">${code}<small>${a.n}</small></span>`;
+};
+const statusBadge = r => {
+  if(r.st==="suspended") return `<span class="badge b-sus">운휴</span>`;
+  if(r.st==="seasonal")  return `<span class="badge b-sea">계절</span>`;
+  if(r.badge==="new")    return `<span class="badge b-new">신규</span>`;
+  if(r.badge==="caveat") return `<span class="badge b-cav">주의</span>`;
+  return "";
+};
+
+// ── 통계
+function renderStats(){
+  const total = ROUTES.length;
+  const active = ROUTES.filter(r=>r.al.length>0 && r.st==="active").length;
+  const off = total - active;
+  const carriers = new Set(); ROUTES.forEach(r=>r.st==="active"&&r.al.forEach(c=>carriers.add(c)));
+  const krCount = [...carriers].filter(c=>AIRLINE[c].kr).length;
+  const data = [
+    {n:total, l:"등재 공항 (31개 도시 · 도쿄 2)"},
+    {n:active, l:"현재 운항 중 노선"},
+    {n:off, l:"운휴 · 계절 비운항"},
+    {n:carriers.size, l:`취항 항공사 (한국 ${krCount} · 외항 ${carriers.size-krCount})`}
+  ];
+  document.getElementById("stats").innerHTML = data.map(d=>
+    `<div class="stat"><div class="n">${d.n}</div><div class="l">${d.l}</div></div>`).join("");
+}
+
+// ── 항공사별 노선 수 막대
+function renderBars(){
+  const cnt = {};
+  ROUTES.filter(r=>r.st==="active").forEach(r=>r.al.forEach(c=>cnt[c]=(cnt[c]||0)+1));
+  const rows = Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  const max = rows.length?rows[0][1]:1;
+  document.getElementById("bars").innerHTML = rows.map(([c,n])=>{
+    const a=AIRLINE[c];
+    return `<div class="bar"><div class="nm" title="${a.n}">${a.n} <span style="color:#9aa3b2">${c}</span></div>
+      <div class="track"><div class="fill" style="width:${n/max*100}%;background:${a.c}"></div></div>
+      <div class="ct">${n}</div></div>`;
+  }).join("");
+  // 범례 (국적/외항 구분)
+  document.getElementById("legend").innerHTML =
+    `<span class="li"><span class="dot" style="background:#0b3d91"></span>한국 국적사</span>
+     <span class="li"><span class="dot" style="background:#444b59"></span>외항사(일본 LCC·기타)</span>
+     <span class="li">막대 = 현재 인천발 직항 취항 노선 수</span>`;
+}
+
+// ── 본문 테이블
+function renderTiers(){
+  const host = document.getElementById("tiers");
+  host.innerHTML = TIERS.map(tier=>{
+    const rs = ROUTES.filter(r=>r.t===tier.id);
+    const body = rs.map(r=>{
+      const als = r.al.length ? `<div class="als">${r.al.map(alBadge).join("")}</div>`
+                              : `<span class="none">현재 직항 없음</span>`;
+      return `<tr data-search="${(r.city+' '+r.apt+' '+r.iata+' '+r.al.map(c=>c+AIRLINE[c].n).join(' ')).toLowerCase()}" data-active="${r.al.length>0 && r.st==='active'?1:0}">
+        <td><span class="city">${r.city}</span> ${statusBadge(r)}<div class="apt">${r.apt}</div><div class="pop">${r.pop}</div></td>
+        <td><span class="iata">${r.iata}</span></td>
+        <td>${krCell(r)}</td>
+        <td>${als}</td>
+        <td class="note">${r.note}</td>
+      </tr>`;
+    }).join("");
+    return `<section class="tier" data-tier="${tier.id}">
+      <div class="tier-h ${tier.id}"><span class="tag">${tier.tag}</span><span class="desc">${tier.desc} · ${rs.length}개 공항</span></div>
+      <table>
+        <thead><tr><th>도시 · 공항 · 규모</th><th>IATA</th><th>한국 관광객 수 · 비중</th><th>취항 항공사</th><th>비고</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table>
+    </section>`;
+  }).join("");
+}
+
+// ── 필터
+function applyFilter(){
+  const q = document.getElementById("q").value.trim().toLowerCase();
+  const op = document.querySelector("#opSeg button.on").dataset.op;
+  document.querySelectorAll("#tiers tr[data-search]").forEach(tr=>{
+    const okq = !q || tr.dataset.search.includes(q);
+    const oka = op==="all" || tr.dataset.active==="1";
+    tr.classList.toggle("hide", !(okq&&oka));
+  });
+  // 빈 티어 섹션 숨김
+  document.querySelectorAll("#tiers .tier").forEach(sec=>{
+    const visible = sec.querySelectorAll("tr[data-search]:not(.hide)").length;
+    sec.classList.toggle("hide", visible===0);
+  });
+}
+
+// ── 한국인 비중 순위 막대 (목적지권 단위 중복 제거)
+function renderKrBars(){
+  const seen={}, list=[];
+  ROUTES.forEach(r=>{ const k=KR[r.iata]; if(!k||seen[k.pref]) return; seen[k.pref]=1;
+    list.push({pref:k.pref,cnt:k.cnt,share:k.share,rank:k.rank}); });
+  list.sort((a,b)=>b.cnt-a.cnt);
+  const max=list[0].cnt;
+  document.getElementById("krbars").innerHTML = list.map(d=>
+    `<div class="bar"><div class="nm" title="${d.pref}">${d.pref} <span style="color:#9aa3b2">${d.share}%</span></div>
+      <div class="track"><div class="fill" style="width:${(d.cnt/max*100).toFixed(1)}%;background:${krColor(d.share)}"></div></div>
+      <div class="ct">${manFmt(d.cnt)}</div></div>`).join("");
+  document.getElementById("krlegend").innerHTML =
+    `<span class="li"><b>막대 길이</b> = 한국인 연 숙박객 수(人泊, 2024)</span>
+     <span class="li"><b>막대 색</b> = 한국 비중:</span>
+     <span class="li"><span class="dot" style="background:#c0392b"></span>40%+</span>
+     <span class="li"><span class="dot" style="background:#e67e22"></span>25~40%</span>
+     <span class="li"><span class="dot" style="background:#d4a017"></span>15~25%</span>
+     <span class="li"><span class="dot" style="background:#2d9d78"></span>8~15%</span>
+     <span class="li"><span class="dot" style="background:#7a8699"></span>~8%</span>`;
+}
+
+// init
+renderStats(); renderBars(); renderKrBars(); renderTiers();
+document.getElementById("q").addEventListener("input", applyFilter);
+document.querySelectorAll("#opSeg button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#opSeg button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); applyFilter();
+}));
+</script>
+</body>
+</html>
